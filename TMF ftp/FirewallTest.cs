@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace TMF_ftp
 {
-    public partial class Form1 : Form
+    public partial class FirewallTest : Form
     {
-        public Form1()
+        public FirewallTest()
         {
             InitializeComponent();
         }
