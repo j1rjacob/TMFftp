@@ -27,23 +27,33 @@ namespace TMF_ftp
         private void ButtonPlay_Click(object sender, EventArgs e)
 		{
 			RepeatHere:
-			try
-			{
-				FTPSsrv.Connect();
-			}
-			catch (System.Net.Sockets.SocketException)
-			{
-				goto RepeatHere;
-			}
+		    try
+		    {
+		        FTPSsrv.Connect();
+
+                //TODO: Check all folder is empty.
+		        if (FTPSsrv.CheckDirectory())
+		        {
+		            goto RepeatHere;
+                }
+		    }
+		    catch (System.IO.IOException)
+		    {
+		        goto RepeatHere;
+		    }
+		    catch (System.Net.Sockets.SocketException)
+		    {
+		        goto RepeatHere;
+		    }
+            catch (TimeoutException)
+		    {
+		        goto RepeatHere;
+            }
 			catch (Exception ex)
 			{
-				//Console.WriteLine(ex.Message);
-				if (ex.Message == "Timed out trying to connect!")
-					goto RepeatHere;
-				else
-					Console.WriteLine(ex.Message);
-				//return;
-			}
+				Console.WriteLine(ex.Message);
+			    goto RepeatHere;
+            }
 			//SFTPsrv.Download();
 		}
 

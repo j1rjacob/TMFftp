@@ -141,6 +141,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Dtos\" />
     <Folder Include="Logs\" />
     <Folder Include="Util\" />
   </ItemGroup>
