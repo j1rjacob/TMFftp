@@ -6,9 +6,8 @@ using System.IO;
 
 namespace TMF_ftp.Services
 {
-	public class SFTPsrv
+    public class SFTPsrv
 	{
-
 		public static void Connect()
 		{
 			using (var client = new SftpClient("127.0.0.1", 22, "j1rjacob", "12345678"))
