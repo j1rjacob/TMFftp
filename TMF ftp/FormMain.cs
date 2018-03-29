@@ -14,6 +14,8 @@ namespace TMF_ftp
 {
     public partial class FormMain : Form
     {
+        private Ftps _srv;
+        private FtpClient _conn;
         public FormMain()
         {
             InitializeComponent();
@@ -22,7 +24,6 @@ namespace TMF_ftp
 
             this.tvFileSystem.DataSource =  new TreeStrategyFolderBrowserProvider();
 
-            // fill root level
             this.tvFileSystem.Populate();
             this.tvFileSystem.Nodes[0].Expand();
         }
@@ -41,82 +42,53 @@ namespace TMF_ftp
         }
         private void ButtonPlay_Click(object sender, EventArgs e)
         {
-	        var srv = new Ftps()
+	        _srv = new Ftps()
 	        {
 		        Host = TextBoxHost.Text,
 		        Username = TextBoxUsername.Text,
 		        Password = TextBoxPassword.Text,
-		        Port = TextBoxPort.Text,
+		        Port = Convert.ToInt32(TextBoxPort.Text),
 		        Type = ComboBoxConnectionType.SelectedText,
 		        Auto = CheckBoxAuto.Checked,
 		        RemoteDirectory = TextBoxRemote.Text,
 		        LocalDirectory = TextBoxDestination.Text
 	        };
-
-	        using (FtpClient client = new FtpClient())
-	        {
-		        client.Host = srv.Host;
-		        client.Credentials = new NetworkCredential(srv.Username, srv.Password); //TODO user input 
-		        client.EncryptionMode = FtpEncryptionMode.Explicit;
-		        client.ValidateCertificate += OnValidateCertificate;
-		        client.Connect();
-
-				GetDirectory(client, srv.RemoteDirectory, srv.LocalDirectory);
-			}
-
-			Task.Run(() => GetFTPSService(srv));
+            GetRemoteDirectory();
+            Task.Run(() => GetFTPSService(_srv));
             //SFTPsrv.Download();
         }
-	    private static void OnValidateCertificate(FtpClient control, FtpSslValidationEventArgs e) => e.Accept = true;
-
-        private void GetDirectory(FtpClient client, string source, string destination)
+        private void GetRemoteDirectory()
         {
+            RepeatHere:
             try
             {
-                var files = client.GetListing(source, FtpListOption.AllFiles);
-                
-                foreach (var file in files)
-                {
-                    ListViewItem item = new ListViewItem();
-                    
-                    if (file.Type == FtpFileSystemObjectType.File)
-                    {
-                        item.Text = file.Name;
-                        item.SubItems.Add("File");
-                        item.SubItems.Add(file.FullName);
-                        item.SubItems.Add(file.Size.ToString());
-                        ListViewSource.Items.Add(item);
-                    }
-                    else if (file.Type == FtpFileSystemObjectType.Directory)
-                    {
-                        item.Text = file.Name;
-                        item.SubItems.Add("Folder");
-                        item.SubItems.Add(file.FullName);
-                        item.SubItems.Add(file.Size.ToString());
-                        ListViewSource.Items.Add(item);
-                        GetDirectory(client, file.FullName, destination + file.Name); //TODO Write to logs
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                //Console.WriteLine(e); //TODO Write to logs
-            }
-        }
+                TreeStrategyFTPProvider ftpProvider =
+                    new TreeStrategyFTPProvider(_srv.Host, _srv.Port, new NetworkCredential(_srv.Username, _srv.Password));
 
+                tvFolderBrowserSource.DataSource = ftpProvider;
+                tvFolderBrowserSource.Populate();
+                tvFolderBrowserSource.Nodes[0].Expand();
+            }
+            catch (Exception)
+            {
+                goto RepeatHere;
+            }
+            
+        }
         private void GetFTPSService(Ftps srv)
         {
 			RepeatHere:
             try
             {
-                FTPSsrv.Connect(srv);
+                //FTPSsrv.Connect(_srv);
+                
                 //TODO: Check all folder is empty.
                 if (FTPSsrv.CheckDirectory(srv))
                 {
                     goto RepeatHere;
                 }
                 
-                Console.WriteLine("Download Finished");
+                //Console.WriteLine("Download Finished");
             }
             catch (System.IO.IOException)
             {
@@ -132,7 +104,7 @@ namespace TMF_ftp
             }
             catch (Exception ex)
             {
-                //Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.Message);
                 goto RepeatHere;
             }
         }
@@ -155,21 +127,6 @@ namespace TMF_ftp
             base.OnClosed(e);
             Application.Exit();
         }
-
-        private void tvFileSystem_SelectedDirectoriesChanged(object sender, SelectedDirectoriesChangedEventArgs e)
-        {
-            //try
-            //{
-            //    TextBoxDestination.Text = tvFileSystem.SelectedNode.FullPath;
-            //}
-            //catch (Exception)
-            //{
-            //    //Console.WriteLine(ex);
-            //    //throw;
-            //    return;
-            //}
-        }
-
         private void tvFileSystem_AfterSelect(object sender, TreeViewEventArgs e)
         {
             try
@@ -182,6 +139,56 @@ namespace TMF_ftp
                 //Console.WriteLine(exception);
                 //throw;
                 return;
+            }
+        }
+        private void tvFolderBrowserSource_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            try
+            {
+                TreeNodePath node = e.Node as TreeNodePath;
+                if (node != null) TextBoxRemote.Text = string.Format(node.Path).Replace("\\", "/");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                //throw;
+                return;
+            }
+        }
+        private void ButtonDownload_Click(object sender, EventArgs e)
+        {
+            Task.Run(() => GoDownload());
+        }
+
+        private void GoDownload()
+        {
+            RepeatHere:
+            try
+            {
+                FTPSsrv.Download(_srv);
+
+                //TODO: Check all folder is empty.
+                if (FTPSsrv.CheckDirectory(_srv))
+                {
+                    goto RepeatHere;
+                }
+            }
+            catch (System.IO.IOException)
+            {
+                goto RepeatHere;
+            }
+            catch (System.Net.Sockets.SocketException)
+            {
+                goto RepeatHere;
+            }
+            catch (TimeoutException)
+            {
+                goto RepeatHere;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                goto RepeatHere;
             }
         }
     }

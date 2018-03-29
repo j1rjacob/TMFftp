@@ -12,6 +12,7 @@ namespace TMF_ftp.Services
 		{
 			using (var client = new SftpClient("127.0.0.1", 22, "j1rjacob", "12345678"))
 			{
+                client.KeepAliveInterval = TimeSpan.FromHours(1);
 				client.Connect();
 				Debug.WriteLine("Successful!");
 			}

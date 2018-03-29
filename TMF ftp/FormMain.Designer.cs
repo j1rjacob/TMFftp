@@ -46,15 +46,11 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.richTextBoxDebug = new System.Windows.Forms.RichTextBox();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.ListViewSource = new System.Windows.Forms.ListView();
-            this.columnHeaderName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeaderType2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeaderPath = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeaderSize = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.button2 = new System.Windows.Forms.Button();
+            this.tvFolderBrowserSource = new Raccoom.Windows.Forms.TreeViewFolderBrowser();
             this.label8 = new System.Windows.Forms.Label();
             this.TextBoxRemote = new System.Windows.Forms.TextBox();
             this.panel4 = new System.Windows.Forms.Panel();
+            this.ButtonDownload = new System.Windows.Forms.Button();
             this.tvFileSystem = new Raccoom.Windows.Forms.TreeViewFolderBrowser();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.label7 = new System.Windows.Forms.Label();
@@ -168,7 +164,7 @@
             this.ButtonPlay.Name = "ButtonPlay";
             this.ButtonPlay.Size = new System.Drawing.Size(75, 23);
             this.ButtonPlay.TabIndex = 10;
-            this.ButtonPlay.Text = "download";
+            this.ButtonPlay.Text = "connect";
             this.ButtonPlay.UseVisualStyleBackColor = true;
             this.ButtonPlay.Click += new System.EventHandler(this.ButtonPlay_Click);
             // 
@@ -226,8 +222,7 @@
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.Chocolate;
-            this.panel2.Controls.Add(this.ListViewSource);
-            this.panel2.Controls.Add(this.button2);
+            this.panel2.Controls.Add(this.tvFolderBrowserSource);
             this.panel2.Controls.Add(this.label8);
             this.panel2.Controls.Add(this.TextBoxRemote);
             this.panel2.Controls.Add(this.panel4);
@@ -236,47 +231,19 @@
             this.panel2.Size = new System.Drawing.Size(720, 177);
             this.panel2.TabIndex = 17;
             // 
-            // ListViewSource
+            // tvFolderBrowserSource
             // 
-            this.ListViewSource.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeaderName,
-            this.columnHeaderType2,
-            this.columnHeaderPath,
-            this.columnHeaderSize});
-            this.ListViewSource.Location = new System.Drawing.Point(360, 32);
-            this.ListViewSource.Name = "ListViewSource";
-            this.ListViewSource.Size = new System.Drawing.Size(360, 144);
-            this.ListViewSource.TabIndex = 21;
-            this.ListViewSource.UseCompatibleStateImageBehavior = false;
-            this.ListViewSource.View = System.Windows.Forms.View.Details;
-            // 
-            // columnHeaderName
-            // 
-            this.columnHeaderName.Text = "Name";
-            this.columnHeaderName.Width = 150;
-            // 
-            // columnHeaderType2
-            // 
-            this.columnHeaderType2.Text = "Type";
-            // 
-            // columnHeaderPath
-            // 
-            this.columnHeaderPath.Text = "Path";
-            this.columnHeaderPath.Width = 100;
-            // 
-            // columnHeaderSize
-            // 
-            this.columnHeaderSize.Text = "Size";
-            // 
-            // button2
-            // 
-            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(630, 7);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 20;
-            this.button2.Text = "set";
-            this.button2.UseVisualStyleBackColor = true;
+            this.tvFolderBrowserSource.CheckBoxBehaviorMode = Raccoom.Windows.Forms.CheckBoxBehaviorMode.None;
+            this.tvFolderBrowserSource.DataSource = null;
+            this.tvFolderBrowserSource.HideSelection = false;
+            this.tvFolderBrowserSource.Location = new System.Drawing.Point(360, 32);
+            this.tvFolderBrowserSource.Name = "tvFolderBrowserSource";
+            this.tvFolderBrowserSource.PathSeparator = "/";
+            this.tvFolderBrowserSource.ShowLines = false;
+            this.tvFolderBrowserSource.ShowRootLines = false;
+            this.tvFolderBrowserSource.Size = new System.Drawing.Size(360, 144);
+            this.tvFolderBrowserSource.TabIndex = 21;
+            this.tvFolderBrowserSource.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvFolderBrowserSource_AfterSelect);
             // 
             // label8
             // 
@@ -294,13 +261,14 @@
             this.TextBoxRemote.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TextBoxRemote.Location = new System.Drawing.Point(448, 8);
             this.TextBoxRemote.Name = "TextBoxRemote";
-            this.TextBoxRemote.Size = new System.Drawing.Size(176, 21);
+            this.TextBoxRemote.Size = new System.Drawing.Size(264, 21);
             this.TextBoxRemote.TabIndex = 18;
             this.TextBoxRemote.Text = "/httpdocs/Test/";
             // 
             // panel4
             // 
             this.panel4.BackColor = System.Drawing.Color.Maroon;
+            this.panel4.Controls.Add(this.ButtonDownload);
             this.panel4.Controls.Add(this.tvFileSystem);
             this.panel4.Controls.Add(this.treeView1);
             this.panel4.Controls.Add(this.label7);
@@ -309,6 +277,17 @@
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(360, 177);
             this.panel4.TabIndex = 17;
+            // 
+            // ButtonDownload
+            // 
+            this.ButtonDownload.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ButtonDownload.Location = new System.Drawing.Point(286, 8);
+            this.ButtonDownload.Name = "ButtonDownload";
+            this.ButtonDownload.Size = new System.Drawing.Size(72, 23);
+            this.ButtonDownload.TabIndex = 19;
+            this.ButtonDownload.Text = "download";
+            this.ButtonDownload.UseVisualStyleBackColor = true;
+            this.ButtonDownload.Click += new System.EventHandler(this.ButtonDownload_Click);
             // 
             // tvFileSystem
             // 
@@ -321,7 +300,6 @@
             this.tvFileSystem.ShowRootLines = false;
             this.tvFileSystem.Size = new System.Drawing.Size(360, 144);
             this.tvFileSystem.TabIndex = 18;
-            this.tvFileSystem.SelectedDirectoriesChanged += new System.EventHandler<Raccoom.Windows.Forms.SelectedDirectoriesChangedEventArgs>(this.tvFileSystem_SelectedDirectoriesChanged);
             this.tvFileSystem.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvFileSystem_AfterSelect);
             // 
             // treeView1
@@ -348,7 +326,7 @@
             this.TextBoxDestination.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TextBoxDestination.Location = new System.Drawing.Point(92, 9);
             this.TextBoxDestination.Name = "TextBoxDestination";
-            this.TextBoxDestination.Size = new System.Drawing.Size(176, 21);
+            this.TextBoxDestination.Size = new System.Drawing.Size(188, 21);
             this.TextBoxDestination.TabIndex = 14;
             this.TextBoxDestination.Text = "E:\\SecuredFTP\\Test\\";
             // 
@@ -494,18 +472,14 @@
         private System.Windows.Forms.RichTextBox richTextBoxDebug;
         private System.Windows.Forms.TreeView treeView1;
         private System.Windows.Forms.ListView listView1;
-        private System.Windows.Forms.ListView ListViewSource;
-        private System.Windows.Forms.Button button2;
         private System.Windows.Forms.ColumnHeader columnHeaderDate;
         private System.Windows.Forms.ColumnHeader columnHeaderMessage;
         private System.Windows.Forms.ColumnHeader columnHeaderType;
         private System.Windows.Forms.ColumnHeader columnHeaderCode;
         private System.Windows.Forms.ColumnHeader columnHeaderDirectory;
-		private System.Windows.Forms.ColumnHeader columnHeaderType2;
-		private System.Windows.Forms.ColumnHeader columnHeaderPath;
-		private System.Windows.Forms.ColumnHeader columnHeaderName;
-		private System.Windows.Forms.ColumnHeader columnHeaderSize;
         private Raccoom.Windows.Forms.TreeViewFolderBrowser tvFileSystem;
+        private Raccoom.Windows.Forms.TreeViewFolderBrowser tvFolderBrowserSource;
+        private System.Windows.Forms.Button ButtonDownload;
     }
 }
 
