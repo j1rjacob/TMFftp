@@ -2,6 +2,7 @@
 using Raccoom.Windows.Forms;
 using System;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TMF_ftp.Factories;
@@ -16,6 +17,11 @@ namespace TMF_ftp
     {
         private Ftps _srv;
         private FtpClient _conn;
+
+        private CancellationTokenSource _tokenSource;
+        private CancellationToken _token;
+        private Task _task;
+
         public FormMain()
         {
             InitializeComponent();
@@ -73,7 +79,6 @@ namespace TMF_ftp
             {
                 goto RepeatHere;
             }
-            
         }
         private void GetFTPSService(Ftps srv)
         {
@@ -124,6 +129,7 @@ namespace TMF_ftp
         protected override void OnClosed(EventArgs e)
         {
             FirewallManager.RemoveFirewallRule();
+            _tokenSource.Cancel();
             base.OnClosed(e);
             Application.Exit();
         }
@@ -157,9 +163,10 @@ namespace TMF_ftp
         }
         private void ButtonDownload_Click(object sender, EventArgs e)
         {
-            Task.Run(() => GoDownload());
+            _tokenSource = new CancellationTokenSource();
+            _token = _tokenSource.Token;
+            _task = Task.Run(() => GoDownload(), _token);
         }
-
         private void GoDownload()
         {
             RepeatHere:

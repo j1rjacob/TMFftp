@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using TMF_ftp.TMFLicensing;
 
 namespace TMF_ftp
 {
@@ -13,8 +14,8 @@ namespace TMF_ftp
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormMain());
-            //Application.Run(new FTPManager());
+            //Application.Run(new FormMain());
+            Application.Run(new Generator());
         }
     }
 }

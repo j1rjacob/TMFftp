@@ -122,6 +122,12 @@
     <Compile Include="Services\FTPSsrv.cs" />
     <Compile Include="Services\FTPSsrv1.cs" />
     <Compile Include="Services\SFTPsrv.cs" />
+    <Compile Include="TMFLicensing\Generator.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TMFLicensing\Generator.Designer.cs">
+      <DependentUpon>Generator.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="FirewallTest.resx">
       <DependentUpon>FirewallTest.cs</DependentUpon>
     </EmbeddedResource>
@@ -140,6 +146,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="TMFLicensing\Generator.resx">
+      <DependentUpon>Generator.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="app.manifest" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
