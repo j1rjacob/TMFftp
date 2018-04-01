@@ -117,13 +117,26 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="contextMenuStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
   <metadata name="openFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>172, 17</value>
+    <value>14, 4</value>
   </metadata>
   <metadata name="statusStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>312, 17</value>
+    <value>148, 8</value>
   </metadata>
+  <metadata name="toolStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>248, 9</value>
+  </metadata>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="ButtonCache.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAG
+        7AAABuwBHnU4NQAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAFISURBVEhLtdUx
+        LwRBGMbxITE7xGnoxRdQ6iRKKh9AIj6EnkqnvVqh9BHI7mwQQqdXalQShQKvuc1mz8z7H3vFKX7NM8+9
+        7yY7d2dE5F9hOE0YKlWxI94dx4pD7CYwVLy7DwMlZs+wm8AwUg5WwsAvtaB0W9hPYBjxdk8N98VzOJrB
+        fgLDiHfnekF4B9QFGI6Z2TDwNVnwHRascV/DsFPPbSTDRyrsZmDY8fZILajdAXYzMOzo6/kupVnEbgaG
+        jdz1jH1Ibdfx8y0MG3w9U73fZgxRbXeT4eFlh1uW9hIYoro4/TX8Ta7cKvYSGCLvHsYL3D52AIbKtRmE
+        wZ/tggvsZGColMV2O/xFLgfL2MnAUKncSbNg9L9A53/AUPH2JrzkIZ71wDBya+bD0z/Jo1nA8x4YRiq3
+        2fzo0dkEMIzcmSXMJ4Th9Ij5AaMyhEr8h5/hAAAAAElFTkSuQmCC
+</value>
+  </data>
 </root>

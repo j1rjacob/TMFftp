@@ -1,4 +1,6 @@
 ﻿using FluentFTP;
+using Quartz;
+using Quartz.Impl;
 using Raccoom.Windows.Forms;
 using System;
 using System.Net;
@@ -10,6 +12,7 @@ using TMF_ftp.Helpers;
 using TMF_ftp.Interfaces;
 using TMF_ftp.Models;
 using TMF_ftp.Services;
+using TMF_ftp.Util;
 
 namespace TMF_ftp
 {
@@ -22,8 +25,12 @@ namespace TMF_ftp
         private CancellationToken _token;
         private Task _task;
 
+        private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public FormMain()
         {
+            _log.Info("Loading Application");
+
             InitializeComponent();
             Console.SetOut(new ConsoleWriter(richTextBoxDebug));
 	        ComboBoxConnectionType.SelectedIndex = 0;
@@ -32,17 +39,18 @@ namespace TMF_ftp
 
             this.tvFileSystem.Populate();
             this.tvFileSystem.Nodes[0].Expand();
+            //Todo: Disable Connect if lic is invalid
         }
         private void FormMain_Load(object sender, EventArgs e)
         {
-            //FirewallManager.SetRule("ON");
             try
             {
                 FirewallManager.SetRule("ON");
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
-                Console.WriteLine(exception); //Write to logs
+                Console.WriteLine(ex); //Write to logs
+                _log.Error(ex);
                 throw;
             }
         }
@@ -75,8 +83,9 @@ namespace TMF_ftp
                 tvFolderBrowserSource.Populate();
                 tvFolderBrowserSource.Nodes[0].Expand();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _log.Error(ex);
                 goto RepeatHere;
             }
         }
@@ -129,7 +138,8 @@ namespace TMF_ftp
         protected override void OnClosed(EventArgs e)
         {
             FirewallManager.RemoveFirewallRule();
-            _tokenSource.Cancel();
+            //_tokenSource.Cancel();
+            _log.Info("Closing the App, Bye.");
             base.OnClosed(e);
             Application.Exit();
         }
@@ -195,7 +205,40 @@ namespace TMF_ftp
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+
                 goto RepeatHere;
+            }
+        }
+        private void LoadTaskScheduler()
+        {
+            try
+            {
+                // construct a scheduler factory
+                ISchedulerFactory schedFact = new StdSchedulerFactory();
+
+                // get a scheduler
+                IScheduler sched = schedFact.GetScheduler();
+                sched.Start();
+
+                IJobDetail job = JobBuilder.Create<AutoJob>()
+                    .WithIdentity("myJob", "group1")
+                    .Build();
+
+                ITrigger trigger = TriggerBuilder.Create()
+                    .WithDailyTimeIntervalSchedule
+                    (s =>
+                        s
+                            //.WithIntervalInHours(1)
+                            .WithIntervalInMinutes(60)
+                            .OnEveryDay()
+                            .StartingDailyAt(TimeOfDay.HourAndMinuteOfDay(8, 00))
+                    )
+                    .Build();
+                sched.ScheduleJob(job, trigger);
+            }
+            catch (ArgumentException e)
+            {
+                _log.Error(e);
             }
         }
     }

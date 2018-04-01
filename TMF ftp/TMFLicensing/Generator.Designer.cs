@@ -63,7 +63,7 @@
             this.TextBoxEmail.Name = "TextBoxEmail";
             this.TextBoxEmail.Size = new System.Drawing.Size(144, 21);
             this.TextBoxEmail.TabIndex = 16;
-            this.TextBoxEmail.Text = "junarjacob@yahoo.com";
+            this.TextBoxEmail.Text = "techinfo.amr@gmail.com";
             // 
             // TextBoxName
             // 
@@ -72,7 +72,7 @@
             this.TextBoxName.Name = "TextBoxName";
             this.TextBoxName.Size = new System.Drawing.Size(144, 21);
             this.TextBoxName.TabIndex = 15;
-            this.TextBoxName.Text = "Junar A. Jacob";
+            this.TextBoxName.Text = "Technical Meter Factory";
             // 
             // label2
             // 

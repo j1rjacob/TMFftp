@@ -1,37 +1,27 @@
 ﻿using Standard.Licensing;
-using Standard.Licensing.Security.Cryptography;
 using Standard.Licensing.Validation;
 using System;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace TMF_ftp.TMFLicensing
 {
-    public partial class Generator : Form
+    public partial class Register : Form
     {
-        private static string _passPhrase = "BetterTheDevilYouThanTheYouDon't"; 
-        private static KeyGenerator _keyGenerator = KeyGenerator.Create(); 
-        private static KeyPair _keyPair = _keyGenerator.GenerateKeyPair(); 
-        private string _privateKey = _keyPair.ToEncryptedPrivateKeyString(_passPhrase); 
-        private string _publicKey = _keyPair.ToPublicKeyString(); 
-        public Generator()
+        public Register()
         {
             InitializeComponent();
         }
 
-        private void ButtonGenerate_Click(object sender, EventArgs e)
+        private void button2_Click(object sender, EventArgs e)
         {
-            var license = License.New()
-                .WithUniqueIdentifier(Guid.NewGuid())
-                .As(LicenseType.Trial)
-                .ExpiresAt(DateTime.Now.AddDays(30))
-                .WithMaximumUtilization(10)
-                .LicensedTo(TextBoxName.Text, TextBoxEmail.Text)
-                .CreateAndSignWithPrivateKey(_privateKey, _passPhrase);
-            textBoxPublicKey.Text = _publicKey;
-            File.WriteAllText(textBoxPath.Text + "License.lic", license.ToString(), Encoding.UTF8);
+            openFileDialog.Filter = "License file|*.lic";
+            DialogResult result = openFileDialog.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                textBoxLicense.Text = openFileDialog.FileName;
+            }
         }
 
         private void buttonValidate_Click(object sender, EventArgs e)
@@ -41,7 +31,6 @@ namespace TMF_ftp.TMFLicensing
             using (var sr = new StreamReader(path))
             {
                 var license = License.Load(sr);
-
 
                 var validationFailures = license.Validate()
                     .ExpirationDate()
@@ -57,6 +46,12 @@ namespace TMF_ftp.TMFLicensing
                 else
                 {
                     //Store to Db
+                    using (StreamWriter writer =
+                        new StreamWriter("license.txt"))
+                    {
+                        writer.Write(textBoxPublicKey.Text);
+                    }
+                    File.Copy(textBoxLicense.Text, Application.StartupPath + "License.lic", true);
                     MessageBox.Show("Valid License!");
                 }
             }
