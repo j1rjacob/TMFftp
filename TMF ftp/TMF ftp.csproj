@@ -145,6 +145,7 @@
     <Compile Include="TMFLicensing\Register.Designer.cs">
       <DependentUpon>Register.cs</DependentUpon>
     </Compile>
+    <Compile Include="TMFLicensing\TMFLicense.cs" />
     <Compile Include="Util\AutoJob.cs" />
     <EmbeddedResource Include="FirewallTest.resx">
       <DependentUpon>FirewallTest.cs</DependentUpon>

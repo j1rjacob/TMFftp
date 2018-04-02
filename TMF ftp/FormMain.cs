@@ -12,6 +12,7 @@ using TMF_ftp.Helpers;
 using TMF_ftp.Interfaces;
 using TMF_ftp.Models;
 using TMF_ftp.Services;
+using TMF_ftp.TMFLicensing;
 using TMF_ftp.Util;
 
 namespace TMF_ftp
@@ -39,7 +40,15 @@ namespace TMF_ftp
 
             this.tvFileSystem.Populate();
             this.tvFileSystem.Nodes[0].Expand();
-            //Todo: Disable Connect if lic is invalid
+
+            if (TMFLicense.Validate())
+            {
+                ButtonDownload.Enabled = true;
+            }
+            else
+            {
+                MessageBox.Show("License not found. Download is disable");
+            }
         }
         private void FormMain_Load(object sender, EventArgs e)
         {
@@ -240,6 +249,41 @@ namespace TMF_ftp
             {
                 _log.Error(e);
             }
+        }
+
+        #region ToolStripMenu
+        private void toolStripButtonFTPServer_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void toolStripButtonRefresh_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void toolStripButtonReconnect_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void toolStripButtonDisconnect_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void toolStripButtonLicense_Click(object sender, EventArgs e)
+        {
+            var validateDialog = new Register();
+            validateDialog.evtFrm += new ShowFrm(EnableDownload);
+            validateDialog.ShowDialog();
+        }
+
+        #endregion
+
+        private void EnableDownload()
+        {
+            ButtonDownload.Enabled = true;
         }
     }
 }

@@ -57,15 +57,15 @@
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.CheckBoxAuto = new System.Windows.Forms.CheckBox();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButtonFTPServer = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButtonRefresh = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButtonReconnect = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButtonDisconnect = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripButtonLicense = new System.Windows.Forms.ToolStripButton();
             this.ButtonCache = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -239,7 +239,7 @@
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label8.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label8.Location = new System.Drawing.Point(364, 14);
+            this.label8.Location = new System.Drawing.Point(364, 13);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(49, 15);
             this.label8.TabIndex = 19;
@@ -248,7 +248,7 @@
             // TextBoxRemote
             // 
             this.TextBoxRemote.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TextBoxRemote.Location = new System.Drawing.Point(448, 9);
+            this.TextBoxRemote.Location = new System.Drawing.Point(448, 8);
             this.TextBoxRemote.Name = "TextBoxRemote";
             this.TextBoxRemote.Size = new System.Drawing.Size(264, 21);
             this.TextBoxRemote.TabIndex = 18;
@@ -269,8 +269,9 @@
             // 
             // ButtonDownload
             // 
+            this.ButtonDownload.Enabled = false;
             this.ButtonDownload.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ButtonDownload.Location = new System.Drawing.Point(286, 9);
+            this.ButtonDownload.Location = new System.Drawing.Point(286, 7);
             this.ButtonDownload.Name = "ButtonDownload";
             this.ButtonDownload.Size = new System.Drawing.Size(72, 23);
             this.ButtonDownload.TabIndex = 19;
@@ -304,7 +305,7 @@
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label7.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label7.Location = new System.Drawing.Point(8, 15);
+            this.label7.Location = new System.Drawing.Point(8, 13);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(72, 15);
             this.label7.TabIndex = 16;
@@ -313,7 +314,7 @@
             // TextBoxDestination
             // 
             this.TextBoxDestination.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TextBoxDestination.Location = new System.Drawing.Point(92, 10);
+            this.TextBoxDestination.Location = new System.Drawing.Point(92, 8);
             this.TextBoxDestination.Name = "TextBoxDestination";
             this.TextBoxDestination.Size = new System.Drawing.Size(188, 21);
             this.TextBoxDestination.TabIndex = 14;
@@ -362,32 +363,12 @@
             this.toolStripSeparator3,
             this.toolStripButtonDisconnect,
             this.toolStripSeparator4,
-            this.toolStripButton1});
+            this.toolStripButtonLicense});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(723, 48);
             this.toolStrip1.TabIndex = 21;
             this.toolStrip1.Text = "toolStrip1";
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 48);
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 48);
-            // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 48);
-            // 
-            // toolStripSeparator4
-            // 
-            this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 48);
             // 
             // toolStripButtonFTPServer
             // 
@@ -398,6 +379,12 @@
             this.toolStripButtonFTPServer.Name = "toolStripButtonFTPServer";
             this.toolStripButtonFTPServer.Size = new System.Drawing.Size(48, 48);
             this.toolStripButtonFTPServer.Text = "FTP Manager";
+            this.toolStripButtonFTPServer.Click += new System.EventHandler(this.toolStripButtonFTPServer_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 48);
             // 
             // toolStripButtonRefresh
             // 
@@ -408,6 +395,12 @@
             this.toolStripButtonRefresh.Name = "toolStripButtonRefresh";
             this.toolStripButtonRefresh.Size = new System.Drawing.Size(48, 48);
             this.toolStripButtonRefresh.Text = "Refresh";
+            this.toolStripButtonRefresh.Click += new System.EventHandler(this.toolStripButtonRefresh_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 48);
             // 
             // toolStripButtonReconnect
             // 
@@ -418,6 +411,12 @@
             this.toolStripButtonReconnect.Name = "toolStripButtonReconnect";
             this.toolStripButtonReconnect.Size = new System.Drawing.Size(48, 48);
             this.toolStripButtonReconnect.Text = "Reconnect";
+            this.toolStripButtonReconnect.Click += new System.EventHandler(this.toolStripButtonReconnect_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 48);
             // 
             // toolStripButtonDisconnect
             // 
@@ -428,16 +427,23 @@
             this.toolStripButtonDisconnect.Name = "toolStripButtonDisconnect";
             this.toolStripButtonDisconnect.Size = new System.Drawing.Size(48, 48);
             this.toolStripButtonDisconnect.Text = "Disconnect";
+            this.toolStripButtonDisconnect.Click += new System.EventHandler(this.toolStripButtonDisconnect_Click);
             // 
-            // toolStripButton1
+            // toolStripSeparator4
             // 
-            this.toolStripButton1.AutoSize = false;
-            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton1.Image = global::TMF_ftp.Properties.Resources.key_48;
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(48, 48);
-            this.toolStripButton1.Text = "toolStripButton1";
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 48);
+            // 
+            // toolStripButtonLicense
+            // 
+            this.toolStripButtonLicense.AutoSize = false;
+            this.toolStripButtonLicense.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonLicense.Image = global::TMF_ftp.Properties.Resources.key_48;
+            this.toolStripButtonLicense.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonLicense.Name = "toolStripButtonLicense";
+            this.toolStripButtonLicense.Size = new System.Drawing.Size(48, 48);
+            this.toolStripButtonLicense.Text = "Validate License";
+            this.toolStripButtonLicense.Click += new System.EventHandler(this.toolStripButtonLicense_Click);
             // 
             // ButtonCache
             // 
@@ -472,6 +478,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "FormMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -520,7 +527,6 @@
         private System.Windows.Forms.TreeView treeView1;
         private Raccoom.Windows.Forms.TreeViewFolderBrowser tvFileSystem;
         private Raccoom.Windows.Forms.TreeViewFolderBrowser tvFolderBrowserSource;
-        private System.Windows.Forms.Button ButtonDownload;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton toolStripButtonFTPServer;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
@@ -530,7 +536,8 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripButton toolStripButtonDisconnect;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
-        private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.ToolStripButton toolStripButtonLicense;
+        private System.Windows.Forms.Button ButtonDownload;
     }
 }
 
