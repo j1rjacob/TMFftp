@@ -1,56 +1,47 @@
-﻿using Renci.SshNet;
+﻿using FluentFTP;
+using Renci.SshNet;
 using Renci.SshNet.Sftp;
 using System;
 using System.Diagnostics;
 using System.IO;
+using TMF_ftp.Models;
 
 namespace TMF_ftp.Services
 {
-    public class SFTPsrv
+    public static class SFTPsrv
 	{
-		public static void Connect()
+	    static SFTPsrv()
+	    {
+	            
+	    }
+		public static void Connect(Ftpx srv)
 		{
-			using (var client = new SftpClient("127.0.0.1", 22, "j1rjacob", "12345678"))
+			using (var client = new SftpClient(srv.Host, srv.Port, srv.Username, srv.Password))
 			{
                 client.KeepAliveInterval = TimeSpan.FromHours(1);
 				client.Connect();
 				Debug.WriteLine("Successful!");
 			}
 		}
-
-		public static void Download()
+		public static void Download(Ftpx srv)
 		{
-			string host = @"127.0.0.1";
-			int port = 22;
-			string username = "j1rjacob";
-			string password = "ajffJNRX143";
-
-			string remoteDirectory = "/JizFTP/";
-			string localDirectory = @"E:\SecuredFTP\Test\";
-
-			using (var sftp = new SftpClient(host, port, username, password))
+			using (var sftp = new SftpClient(srv.Host, srv.Port, srv.Username, srv.Password))
 			{
 				sftp.Connect();
-				DownloadDirectory(sftp, sftp.WorkingDirectory, localDirectory);
-				Console.WriteLine("Kalas");
-				//var files = sftp.ListDirectory(sftp.WorkingDirectory + "/84EB18E26184/");
-
-				//foreach (var file in files)
-				//{
-				//    string remoteFileName = file.Name;
-				//    Console.WriteLine(remoteFileName);
-				//    //if ((!file.Name.StartsWith(".")) && ((file.LastWriteTime.Date == DateTime.Today)))
-
-				//        using (Stream file1 = File.OpenWrite(localDirectory + remoteFileName))
-				//        {
-				//            sftp.DownloadFile(sftp.WorkingDirectory + "/84EB18E26184/" + remoteFileName, file1);
-				//            Console.WriteLine("Ok");
-				//        }
-				//}
+				DownloadDirectory(sftp, sftp.WorkingDirectory, srv.LocalDirectory);
+				Console.WriteLine("Download Finished");
 			}
 		}
-
-		private static void DownloadDirectory(SftpClient client, string source, string destination)
+	    public static bool CheckDirectory(Ftpx srv)
+	    {
+	        using (var sftp = new SftpClient(srv.Host, srv.Port, srv.Username, srv.Password))
+	        {
+	            sftp.Connect();
+	            return IsEmpty(sftp, srv.RemoteDirectory);
+            }
+        }
+	    private static void OnValidateCertificate(FtpClient control, FtpSslValidationEventArgs e) => e.Accept = true;
+        private static void DownloadDirectory(SftpClient client, string source, string destination)
 		{
 			try
 			{
@@ -80,7 +71,6 @@ namespace TMF_ftp.Services
 			}
 
 		}
-
 		private static void DownloadFile(SftpClient client, SftpFile file, string directory)
 		{
 			try
@@ -100,5 +90,33 @@ namespace TMF_ftp.Services
 				throw;
 			}
 		}
-	}
+	    public static bool IsEmpty(SftpClient client, string source)
+	    {
+	        try
+	        {
+	            var files = client.ListDirectory(source);
+
+                foreach (var file in files)
+	            {
+	                if (!file.IsDirectory && !file.IsSymbolicLink)
+                    {
+	                    return true;
+	                }
+	                else if (file.IsSymbolicLink)
+                    {
+	                    Console.WriteLine("Ignoring symbolic link {0}", file.FullName); //TODO Write to logs
+	                }
+	                else if (file.Name != "." && file.Name != "..")
+                    {
+	                    IsEmpty(client, file.FullName); //TODO Write to logs
+	                }
+	            }
+	        }
+	        catch (Exception e)
+	        {
+	            Console.WriteLine(e); //TODO Write to logs
+	        }
+	        return false;
+	    }
+    }
 }

@@ -1,4 +1,4 @@
-﻿using FluentFTP;
+﻿//(Junar A. Jacob) => Author();
 using Quartz;
 using Quartz.Impl;
 using Raccoom.Windows.Forms;
@@ -19,12 +19,8 @@ namespace TMF_ftp
 {
     public partial class FormMain : Form
     {
-        private Ftps _srv;
-        private FtpClient _conn;
-
-        private CancellationTokenSource _tokenSource;
-        private CancellationToken _token;
-        private Task _task;
+        private static Ftpx _srv;
+        private static string _cmbBox;
 
         private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -65,7 +61,7 @@ namespace TMF_ftp
         }
         private void ButtonPlay_Click(object sender, EventArgs e)
         {
-	        _srv = new Ftps()
+	        _srv = new Ftpx()
 	        {
 		        Host = TextBoxHost.Text,
 		        Username = TextBoxUsername.Text,
@@ -76,11 +72,53 @@ namespace TMF_ftp
 		        RemoteDirectory = TextBoxRemote.Text,
 		        LocalDirectory = TextBoxDestination.Text
 	        };
-            GetRemoteDirectory();
-            Task.Run(() => GetFTPSService(_srv));
+            
+            if (ComboBoxConnectionType.Text == "FTPS")
+            {
+                GetFTPSRemoteDirectory();
+                //Task.Run(() => GetFTPSService(_srv));
+            }
+            else if (ComboBoxConnectionType.Text == "SFTP")
+            {
+                GetSFTPRemoteDirectory();
+                //Task.Run(() => GetSFTPService(_srv));
+            }
             //SFTPsrv.Download();
         }
-        private void GetRemoteDirectory()
+        private void GetSFTPService(Ftpx srv)
+        {
+            RepeatHere:
+            try
+            {
+                //FTPSsrv.Connect(_srv);
+
+                //TODO: Check all folder is empty.
+                if (FTPSsrv.CheckDirectory(srv))
+                {
+                    goto RepeatHere;
+                }
+
+                //Console.WriteLine("Download Finished");
+            }
+            catch (System.IO.IOException)
+            {
+                goto RepeatHere;
+            }
+            catch (System.Net.Sockets.SocketException)
+            {
+                goto RepeatHere;
+            }
+            catch (TimeoutException)
+            {
+                goto RepeatHere;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                goto RepeatHere;
+            }
+        }
+        private void GetSFTPRemoteDirectory()
         {
             RepeatHere:
             try
@@ -98,7 +136,25 @@ namespace TMF_ftp
                 goto RepeatHere;
             }
         }
-        private void GetFTPSService(Ftps srv)
+        private void GetFTPSRemoteDirectory()
+        {
+            RepeatHere:
+            try
+            {
+                TreeStrategyFTPProvider ftpProvider =
+                    new TreeStrategyFTPProvider(_srv.Host, _srv.Port, new NetworkCredential(_srv.Username, _srv.Password));
+
+                tvFolderBrowserSource.DataSource = ftpProvider;
+                tvFolderBrowserSource.Populate();
+                tvFolderBrowserSource.Nodes[0].Expand();
+            }
+            catch (Exception ex)
+            {
+                _log.Error(ex);
+                goto RepeatHere;
+            }
+        }
+        private void GetFTPSService(Ftpx srv)
         {
 			RepeatHere:
             try
@@ -180,20 +236,21 @@ namespace TMF_ftp
                 return;
             }
         }
+        private void ComboBoxConnectionType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            _cmbBox = ComboBoxConnectionType.Text;
+        }
         private void ButtonDownload_Click(object sender, EventArgs e)
         {
-            _tokenSource = new CancellationTokenSource();
-            _token = _tokenSource.Token;
-            _task = Task.Run(() => GoDownload(), _token);
+            PerformDownload();
         }
-        private void GoDownload()
+        private static void GoFTPSDownload()
         {
             RepeatHere:
             try
             {
                 FTPSsrv.Download(_srv);
 
-                //TODO: Check all folder is empty.
                 if (FTPSsrv.CheckDirectory(_srv))
                 {
                     goto RepeatHere;
@@ -215,6 +272,36 @@ namespace TMF_ftp
             {
                 Console.WriteLine(ex.Message);
 
+                goto RepeatHere;
+            }
+        }
+        private static void GoSFTPDownload()
+        {
+            RepeatHere:
+            try
+            {
+                SFTPsrv.Download(_srv);
+
+                if (SFTPsrv.CheckDirectory(_srv))
+                {
+                    goto RepeatHere;
+                }
+            }
+            catch (System.IO.IOException)
+            {
+                goto RepeatHere;
+            }
+            catch (System.Net.Sockets.SocketException)
+            {
+                goto RepeatHere;
+            }
+            catch (TimeoutException)
+            {
+                goto RepeatHere;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
                 goto RepeatHere;
             }
         }
@@ -284,6 +371,27 @@ namespace TMF_ftp
         private void EnableDownload()
         {
             ButtonDownload.Enabled = true;
+        }
+        public static void PerformDownload()
+        {
+            if (_cmbBox == "FTPS")
+            {
+                CancellationTokenSource _tokenSource;
+                CancellationToken _token;
+                Task _task;
+                _tokenSource = new CancellationTokenSource();
+                _token = _tokenSource.Token;
+                _task = Task.Run(() => GoFTPSDownload(), _token);
+            }
+            else if (_cmbBox == "SFTP")
+            {
+                CancellationTokenSource _tokenSource;
+                CancellationToken _token;
+                Task _task;
+                _tokenSource = new CancellationTokenSource();
+                _token = _tokenSource.Token;
+                _task = Task.Run(() => GoSFTPDownload(), _token);
+            }
         }
     }
 }

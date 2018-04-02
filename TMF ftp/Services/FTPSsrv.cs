@@ -2,7 +2,6 @@
 using System;
 using System.IO;
 using System.Net;
-using TMF_ftp.Helpers;
 using TMF_ftp.Models;
 
 namespace TMF_ftp.Services
@@ -11,23 +10,9 @@ namespace TMF_ftp.Services
     {
         static FTPSsrv()
         {
-            Debug.LogToCustomListener();
+            //Debug.LogToCustomListener();
         }
-        public static void Download(Ftps srv)
-        {
-            using (FtpClient client = new FtpClient())
-            {
-                client.Host = srv.Host;
-                client.Credentials = new NetworkCredential(srv.Username, srv.Password); //TODO user input 
-                client.EncryptionMode = FtpEncryptionMode.Explicit;
-                client.ValidateCertificate += OnValidateCertificate;
-                client.SocketKeepAlive = true;
-                client.Connect();
-                
-                DownloadDirectory(client, srv.RemoteDirectory, srv.LocalDirectory);
-            }
-        }
-        public static void Connect(Ftps srv)
+        public static void Connect(Ftpx srv)
         {
             using (var client = new FtpClient())
             {
@@ -39,7 +24,21 @@ namespace TMF_ftp.Services
                 client.Connect();
             }
         }
-        public static bool CheckDirectory(Ftps srv)
+        public static void Download(Ftpx srv)
+        {
+            using (FtpClient client = new FtpClient())
+            {
+                client.Host = srv.Host;
+                client.Credentials = new NetworkCredential(srv.Username, srv.Password); //TODO user input 
+                client.EncryptionMode = FtpEncryptionMode.Explicit;
+                client.ValidateCertificate += OnValidateCertificate;
+                client.SocketKeepAlive = true;
+                client.Connect();
+
+                DownloadDirectory(client, srv.RemoteDirectory, srv.LocalDirectory);
+            }
+        }
+        public static bool CheckDirectory(Ftpx srv)
         {
             using (FtpClient client = new FtpClient())
             {

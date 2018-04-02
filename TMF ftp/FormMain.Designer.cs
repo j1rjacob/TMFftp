@@ -187,6 +187,7 @@
             this.ComboBoxConnectionType.Name = "ComboBoxConnectionType";
             this.ComboBoxConnectionType.Size = new System.Drawing.Size(100, 23);
             this.ComboBoxConnectionType.TabIndex = 15;
+            this.ComboBoxConnectionType.SelectedIndexChanged += new System.EventHandler(this.ComboBoxConnectionType_SelectedIndexChanged);
             // 
             // panel1
             // 
@@ -390,6 +391,7 @@
             // 
             this.toolStripButtonRefresh.AutoSize = false;
             this.toolStripButtonRefresh.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonRefresh.Enabled = false;
             this.toolStripButtonRefresh.Image = global::TMF_ftp.Properties.Resources.refresh_48;
             this.toolStripButtonRefresh.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonRefresh.Name = "toolStripButtonRefresh";
@@ -406,6 +408,7 @@
             // 
             this.toolStripButtonReconnect.AutoSize = false;
             this.toolStripButtonReconnect.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonReconnect.Enabled = false;
             this.toolStripButtonReconnect.Image = global::TMF_ftp.Properties.Resources.on_48;
             this.toolStripButtonReconnect.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonReconnect.Name = "toolStripButtonReconnect";
@@ -422,6 +425,7 @@
             // 
             this.toolStripButtonDisconnect.AutoSize = false;
             this.toolStripButtonDisconnect.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonDisconnect.Enabled = false;
             this.toolStripButtonDisconnect.Image = global::TMF_ftp.Properties.Resources.off_48;
             this.toolStripButtonDisconnect.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonDisconnect.Name = "toolStripButtonDisconnect";

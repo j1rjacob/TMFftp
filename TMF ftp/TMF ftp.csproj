@@ -121,7 +121,7 @@
     <Compile Include="Interfaces\IFtp.cs" />
     <Compile Include="Interfaces\IFtpFactory.cs" />
     <Compile Include="Models\FilePath.cs" />
-    <Compile Include="Models\Ftps.cs" />
+    <Compile Include="Models\Ftpx.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
