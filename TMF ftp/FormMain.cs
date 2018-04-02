@@ -23,6 +23,7 @@ namespace TMF_ftp
         private static string _cmbBox;
 
         private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static CancellationTokenSource _cancellationTokenSource;
 
         public FormMain()
         {
@@ -203,7 +204,7 @@ namespace TMF_ftp
         protected override void OnClosed(EventArgs e)
         {
             FirewallManager.RemoveFirewallRule();
-            //_tokenSource.Cancel();
+            _cancellationTokenSource.Cancel();
             _log.Info("Closing the App, Bye.");
             base.OnClosed(e);
             Application.Exit();
@@ -244,35 +245,41 @@ namespace TMF_ftp
         {
             PerformDownload();
         }
-        private static void GoFTPSDownload()
+        private static void GoFTPSDownload(CancellationToken ftpsToken)
         {
-            RepeatHere:
-            try
+            while (!ftpsToken.IsCancellationRequested)
             {
-                FTPSsrv.Download(_srv);
+                if (ftpsToken.IsCancellationRequested)
+                {
+                    return;
+                }
+                RepeatHere:
+                try
+                {
+                    FTPSsrv.Download(_srv);
 
-                if (FTPSsrv.CheckDirectory(_srv))
+                    if (FTPSsrv.CheckDirectory(_srv))
+                    {
+                        goto RepeatHere;
+                    }
+                }
+                catch (System.IO.IOException)
                 {
                     goto RepeatHere;
                 }
-            }
-            catch (System.IO.IOException)
-            {
-                goto RepeatHere;
-            }
-            catch (System.Net.Sockets.SocketException)
-            {
-                goto RepeatHere;
-            }
-            catch (TimeoutException)
-            {
-                goto RepeatHere;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-
-                goto RepeatHere;
+                catch (System.Net.Sockets.SocketException)
+                {
+                    goto RepeatHere;
+                }
+                catch (TimeoutException)
+                {
+                    goto RepeatHere;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    goto RepeatHere;
+                }
             }
         }
         private static void GoSFTPDownload()
@@ -376,21 +383,17 @@ namespace TMF_ftp
         {
             if (_cmbBox == "FTPS")
             {
-                CancellationTokenSource _tokenSource;
-                CancellationToken _token;
-                Task _task;
-                _tokenSource = new CancellationTokenSource();
-                _token = _tokenSource.Token;
-                _task = Task.Run(() => GoFTPSDownload(), _token);
+                _cancellationTokenSource = new CancellationTokenSource();
+                CancellationToken token = _cancellationTokenSource.Token;
+                
+                Task.Run(() => GoFTPSDownload(token));
             }
             else if (_cmbBox == "SFTP")
             {
-                CancellationTokenSource _tokenSource;
-                CancellationToken _token;
-                Task _task;
-                _tokenSource = new CancellationTokenSource();
-                _token = _tokenSource.Token;
-                _task = Task.Run(() => GoSFTPDownload(), _token);
+                _cancellationTokenSource = new CancellationTokenSource();
+                CancellationToken token = _cancellationTokenSource.Token;
+                _cancellationTokenSource.Cancel();
+                Task.Run(() => GoSFTPDownload(), token);
             }
         }
     }

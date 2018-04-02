@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Net;
+using TMF_ftp.Helpers;
 using TMF_ftp.Models;
 
 namespace TMF_ftp.Services
@@ -10,7 +11,7 @@ namespace TMF_ftp.Services
     {
         static FTPSsrv()
         {
-            //Debug.LogToCustomListener();
+            Debug.LogToCustomListener();
         }
         public static void Connect(Ftpx srv)
         {
