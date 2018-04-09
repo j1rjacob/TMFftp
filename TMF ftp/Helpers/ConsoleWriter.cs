@@ -15,7 +15,15 @@ namespace TMF_ftp.Helpers
         public override void WriteLine(string str)
         {
             //this.rTextBox.AppendText(str + "\n");
-            this.rTextBox.Invoke((Action)delegate { this.rTextBox.AppendText(str + "\n"); });
+            try
+            {
+                this.rTextBox.Invoke((Action) delegate { this.rTextBox.AppendText(str + "\n"); });
+            }
+            catch (Exception)
+            {
+                throw;
+                //Application.Exit();
+            }
         }
 
         public override Encoding Encoding

@@ -63,7 +63,7 @@
             this.TextBoxEmail.Name = "TextBoxEmail";
             this.TextBoxEmail.Size = new System.Drawing.Size(144, 21);
             this.TextBoxEmail.TabIndex = 16;
-            this.TextBoxEmail.Text = "techinfo.amr@gmail.com";
+            this.TextBoxEmail.Text = "admin@stl.com";
             // 
             // TextBoxName
             // 
@@ -72,7 +72,7 @@
             this.TextBoxName.Name = "TextBoxName";
             this.TextBoxName.Size = new System.Drawing.Size(144, 21);
             this.TextBoxName.TabIndex = 15;
-            this.TextBoxName.Text = "Technical Meter Factory";
+            this.TextBoxName.Text = "Saudi Tech Limited";
             // 
             // label2
             // 
@@ -105,7 +105,7 @@
             this.textBoxPath.Name = "textBoxPath";
             this.textBoxPath.Size = new System.Drawing.Size(248, 21);
             this.textBoxPath.TabIndex = 15;
-            this.textBoxPath.Text = "E:\\SecuredFTP\\";
+            this.textBoxPath.Text = "E:\\MaskRider\\";
             // 
             // buttonPath
             // 
@@ -164,7 +164,7 @@
             this.textBoxLicense.Name = "textBoxLicense";
             this.textBoxLicense.Size = new System.Drawing.Size(248, 21);
             this.textBoxLicense.TabIndex = 23;
-            this.textBoxLicense.Text = "E:\\SecuredFTP\\License.lic";
+            this.textBoxLicense.Text = "E:\\MaskRider\\License.lic";
             // 
             // textBoxPublicKey
             // 

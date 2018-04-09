@@ -2,7 +2,6 @@
 using Renci.SshNet;
 using Renci.SshNet.Sftp;
 using System;
-using System.Diagnostics;
 using System.IO;
 using TMF_ftp.Models;
 
@@ -12,15 +11,16 @@ namespace TMF_ftp.Services
 	{
 	    static SFTPsrv()
 	    {
-	            
-	    }
-		public static void Connect(Ftpx srv)
+            Helpers.Debug.LogToCustomListener();
+
+        }
+        public static void Connect(Ftpx srv)
 		{
 			using (var client = new SftpClient(srv.Host, srv.Port, srv.Username, srv.Password))
 			{
                 client.KeepAliveInterval = TimeSpan.FromHours(1);
 				client.Connect();
-				Debug.WriteLine("Successful!");
+                System.Diagnostics.Debug.WriteLine("Successful!");
 			}
 		}
 		public static void Download(Ftpx srv)
@@ -29,7 +29,6 @@ namespace TMF_ftp.Services
 			{
 				sftp.Connect();
 				DownloadDirectory(sftp, sftp.WorkingDirectory, srv.LocalDirectory);
-				Console.WriteLine("Download Finished");
 			}
 		}
 	    public static bool CheckDirectory(Ftpx srv)
@@ -69,7 +68,6 @@ namespace TMF_ftp.Services
 				Console.WriteLine(e); //TODO: Write to logs
 				throw;
 			}
-
 		}
 		private static void DownloadFile(SftpClient client, SftpFile file, string directory)
 		{

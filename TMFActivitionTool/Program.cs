@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace TMF_ftp
+namespace TMFActivitionTool
 {
     static class Program
     {
@@ -13,9 +16,7 @@ namespace TMF_ftp
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new FormMain());
-            //Application.Run(new frmActivation());
-            Application.Run(new About());
+            Application.Run(new frmMain());
         }
     }
 }

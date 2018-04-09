@@ -57,14 +57,10 @@
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.CheckBoxAuto = new System.Windows.Forms.CheckBox();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.toolStripButtonFTPServer = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonFTPServer = new System.Windows.Forms.ToolStripSplitButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripButtonRefresh = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripButtonReconnect = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonCancel = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripButtonDisconnect = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButtonLicense = new System.Windows.Forms.ToolStripButton();
             this.ButtonCache = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
@@ -131,7 +127,7 @@
             this.TextBoxHost.Name = "TextBoxHost";
             this.TextBoxHost.Size = new System.Drawing.Size(100, 21);
             this.TextBoxHost.TabIndex = 6;
-            this.TextBoxHost.Text = "stl-amr.com";
+            this.TextBoxHost.Text = "10.195.111.27";
             // 
             // TextBoxUsername
             // 
@@ -140,7 +136,7 @@
             this.TextBoxUsername.Name = "TextBoxUsername";
             this.TextBoxUsername.Size = new System.Drawing.Size(100, 21);
             this.TextBoxUsername.TabIndex = 7;
-            this.TextBoxUsername.Text = "j1rjacob";
+            this.TextBoxUsername.Text = "jizftp";
             // 
             // TextBoxPassword
             // 
@@ -150,7 +146,7 @@
             this.TextBoxPassword.PasswordChar = '*';
             this.TextBoxPassword.Size = new System.Drawing.Size(100, 21);
             this.TextBoxPassword.TabIndex = 8;
-            this.TextBoxPassword.Text = "ajffJNRX143";
+            this.TextBoxPassword.Text = "123456";
             // 
             // TextBoxPort
             // 
@@ -159,7 +155,7 @@
             this.TextBoxPort.Name = "TextBoxPort";
             this.TextBoxPort.Size = new System.Drawing.Size(40, 21);
             this.TextBoxPort.TabIndex = 9;
-            this.TextBoxPort.Text = "21";
+            this.TextBoxPort.Text = "9000";
             // 
             // ButtonPlay
             // 
@@ -319,7 +315,7 @@
             this.TextBoxDestination.Name = "TextBoxDestination";
             this.TextBoxDestination.Size = new System.Drawing.Size(188, 21);
             this.TextBoxDestination.TabIndex = 14;
-            this.TextBoxDestination.Text = "E:\\SecuredFTP\\Test\\";
+            this.TextBoxDestination.Text = "C:\\Test\\";
             // 
             // statusStrip1
             // 
@@ -350,6 +346,7 @@
             this.CheckBoxAuto.TabIndex = 20;
             this.CheckBoxAuto.Text = "Allow Auto";
             this.CheckBoxAuto.UseVisualStyleBackColor = true;
+            this.CheckBoxAuto.CheckedChanged += new System.EventHandler(this.CheckBoxAuto_CheckedChanged);
             // 
             // toolStrip1
             // 
@@ -358,12 +355,8 @@
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripButtonFTPServer,
             this.toolStripSeparator1,
-            this.toolStripButtonRefresh,
-            this.toolStripSeparator2,
-            this.toolStripButtonReconnect,
+            this.toolStripButtonCancel,
             this.toolStripSeparator3,
-            this.toolStripButtonDisconnect,
-            this.toolStripSeparator4,
             this.toolStripButtonLicense});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
@@ -373,13 +366,13 @@
             // 
             // toolStripButtonFTPServer
             // 
-            this.toolStripButtonFTPServer.AutoSize = false;
             this.toolStripButtonFTPServer.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonFTPServer.Enabled = false;
             this.toolStripButtonFTPServer.Image = global::TMF_ftp.Properties.Resources.server_48;
             this.toolStripButtonFTPServer.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonFTPServer.Name = "toolStripButtonFTPServer";
-            this.toolStripButtonFTPServer.Size = new System.Drawing.Size(48, 48);
-            this.toolStripButtonFTPServer.Text = "FTP Manager";
+            this.toolStripButtonFTPServer.Size = new System.Drawing.Size(64, 45);
+            this.toolStripButtonFTPServer.Text = "toolStripSplitButton1";
             this.toolStripButtonFTPServer.Click += new System.EventHandler(this.toolStripButtonFTPServer_Click);
             // 
             // toolStripSeparator1
@@ -387,56 +380,22 @@
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 48);
             // 
-            // toolStripButtonRefresh
+            // toolStripButtonCancel
             // 
-            this.toolStripButtonRefresh.AutoSize = false;
-            this.toolStripButtonRefresh.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButtonRefresh.Enabled = false;
-            this.toolStripButtonRefresh.Image = global::TMF_ftp.Properties.Resources.refresh_48;
-            this.toolStripButtonRefresh.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonRefresh.Name = "toolStripButtonRefresh";
-            this.toolStripButtonRefresh.Size = new System.Drawing.Size(48, 48);
-            this.toolStripButtonRefresh.Text = "Refresh";
-            this.toolStripButtonRefresh.Click += new System.EventHandler(this.toolStripButtonRefresh_Click);
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 48);
-            // 
-            // toolStripButtonReconnect
-            // 
-            this.toolStripButtonReconnect.AutoSize = false;
-            this.toolStripButtonReconnect.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButtonReconnect.Enabled = false;
-            this.toolStripButtonReconnect.Image = global::TMF_ftp.Properties.Resources.on_48;
-            this.toolStripButtonReconnect.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonReconnect.Name = "toolStripButtonReconnect";
-            this.toolStripButtonReconnect.Size = new System.Drawing.Size(48, 48);
-            this.toolStripButtonReconnect.Text = "Reconnect";
-            this.toolStripButtonReconnect.Click += new System.EventHandler(this.toolStripButtonReconnect_Click);
+            this.toolStripButtonCancel.AutoSize = false;
+            this.toolStripButtonCancel.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonCancel.Enabled = false;
+            this.toolStripButtonCancel.Image = global::TMF_ftp.Properties.Resources.cancel_48;
+            this.toolStripButtonCancel.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonCancel.Name = "toolStripButtonCancel";
+            this.toolStripButtonCancel.Size = new System.Drawing.Size(48, 48);
+            this.toolStripButtonCancel.Text = "Cancel";
+            this.toolStripButtonCancel.Click += new System.EventHandler(this.toolStripButtonCancel_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(6, 48);
-            // 
-            // toolStripButtonDisconnect
-            // 
-            this.toolStripButtonDisconnect.AutoSize = false;
-            this.toolStripButtonDisconnect.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButtonDisconnect.Enabled = false;
-            this.toolStripButtonDisconnect.Image = global::TMF_ftp.Properties.Resources.off_48;
-            this.toolStripButtonDisconnect.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonDisconnect.Name = "toolStripButtonDisconnect";
-            this.toolStripButtonDisconnect.Size = new System.Drawing.Size(48, 48);
-            this.toolStripButtonDisconnect.Text = "Disconnect";
-            this.toolStripButtonDisconnect.Click += new System.EventHandler(this.toolStripButtonDisconnect_Click);
-            // 
-            // toolStripSeparator4
-            // 
-            this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 48);
             // 
             // toolStripButtonLicense
             // 
@@ -452,12 +411,14 @@
             // ButtonCache
             // 
             this.ButtonCache.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("ButtonCache.BackgroundImage")));
+            this.ButtonCache.Enabled = false;
             this.ButtonCache.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ButtonCache.Location = new System.Drawing.Point(640, 49);
             this.ButtonCache.Name = "ButtonCache";
             this.ButtonCache.Size = new System.Drawing.Size(24, 23);
             this.ButtonCache.TabIndex = 12;
             this.ButtonCache.UseVisualStyleBackColor = true;
+            this.ButtonCache.Visible = false;
             // 
             // FormMain
             // 
@@ -532,16 +493,12 @@
         private Raccoom.Windows.Forms.TreeViewFolderBrowser tvFileSystem;
         private Raccoom.Windows.Forms.TreeViewFolderBrowser tvFolderBrowserSource;
         private System.Windows.Forms.ToolStrip toolStrip1;
-        private System.Windows.Forms.ToolStripButton toolStripButtonFTPServer;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripButton toolStripButtonRefresh;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.ToolStripButton toolStripButtonReconnect;
+        private System.Windows.Forms.ToolStripButton toolStripButtonCancel;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
-        private System.Windows.Forms.ToolStripButton toolStripButtonDisconnect;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripButton toolStripButtonLicense;
         private System.Windows.Forms.Button ButtonDownload;
+        private System.Windows.Forms.ToolStripSplitButton toolStripButtonFTPServer;
     }
 }
 

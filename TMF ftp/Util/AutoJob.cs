@@ -3,10 +3,9 @@ using System;
 
 namespace TMF_ftp.Util
 {
-    public delegate void MainFrm();
+
     public class AutoJob : IJob
     {
-        public event MainFrm evtFrm;
         public void Execute(IJobExecutionContext context)
         {
             try
@@ -15,7 +14,7 @@ namespace TMF_ftp.Util
             }
             catch (Exception)
             {
-                throw;
+                return;
             }
         }
     }

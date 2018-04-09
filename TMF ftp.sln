@@ -7,22 +7,63 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBase", "DBase\DBase.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TMF ftp", "TMF ftp\TMF ftp.csproj", "{BC4BB011-7602-4BCA-9260-57A90203EA7C}"
 EndProject
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "SetupProject", "SetupProject\SetupProject.wixproj", "{DED2573F-9D06-499F-BDA7-DB163C0785F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TMFLicense", "TMFLicense\TMFLicense.csproj", "{FD5091DC-C0AD-40BA-A6C7-B4BB71EDD4E9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TMFActivitionTool", "TMFActivitionTool\TMFActivitionTool.csproj", "{E63AB07C-174B-442E-9CE7-3D70EA9C9F84}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
 		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{BB0F4F76-3722-4B52-AC47-48EBE8A1336A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BB0F4F76-3722-4B52-AC47-48EBE8A1336A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB0F4F76-3722-4B52-AC47-48EBE8A1336A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BB0F4F76-3722-4B52-AC47-48EBE8A1336A}.Debug|x86.Build.0 = Debug|Any CPU
 		{BB0F4F76-3722-4B52-AC47-48EBE8A1336A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BB0F4F76-3722-4B52-AC47-48EBE8A1336A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB0F4F76-3722-4B52-AC47-48EBE8A1336A}.Release|x86.ActiveCfg = Release|Any CPU
+		{BB0F4F76-3722-4B52-AC47-48EBE8A1336A}.Release|x86.Build.0 = Release|Any CPU
 		{BC4BB011-7602-4BCA-9260-57A90203EA7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BC4BB011-7602-4BCA-9260-57A90203EA7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC4BB011-7602-4BCA-9260-57A90203EA7C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BC4BB011-7602-4BCA-9260-57A90203EA7C}.Debug|x86.Build.0 = Debug|Any CPU
 		{BC4BB011-7602-4BCA-9260-57A90203EA7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BC4BB011-7602-4BCA-9260-57A90203EA7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC4BB011-7602-4BCA-9260-57A90203EA7C}.Release|x86.ActiveCfg = Release|Any CPU
+		{BC4BB011-7602-4BCA-9260-57A90203EA7C}.Release|x86.Build.0 = Release|Any CPU
+		{DED2573F-9D06-499F-BDA7-DB163C0785F8}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{DED2573F-9D06-499F-BDA7-DB163C0785F8}.Debug|x86.ActiveCfg = Debug|x86
+		{DED2573F-9D06-499F-BDA7-DB163C0785F8}.Debug|x86.Build.0 = Debug|x86
+		{DED2573F-9D06-499F-BDA7-DB163C0785F8}.Release|Any CPU.ActiveCfg = Release|x86
+		{DED2573F-9D06-499F-BDA7-DB163C0785F8}.Release|x86.ActiveCfg = Release|x86
+		{DED2573F-9D06-499F-BDA7-DB163C0785F8}.Release|x86.Build.0 = Release|x86
+		{FD5091DC-C0AD-40BA-A6C7-B4BB71EDD4E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD5091DC-C0AD-40BA-A6C7-B4BB71EDD4E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD5091DC-C0AD-40BA-A6C7-B4BB71EDD4E9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FD5091DC-C0AD-40BA-A6C7-B4BB71EDD4E9}.Debug|x86.Build.0 = Debug|Any CPU
+		{FD5091DC-C0AD-40BA-A6C7-B4BB71EDD4E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD5091DC-C0AD-40BA-A6C7-B4BB71EDD4E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD5091DC-C0AD-40BA-A6C7-B4BB71EDD4E9}.Release|x86.ActiveCfg = Release|Any CPU
+		{FD5091DC-C0AD-40BA-A6C7-B4BB71EDD4E9}.Release|x86.Build.0 = Release|Any CPU
+		{E63AB07C-174B-442E-9CE7-3D70EA9C9F84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E63AB07C-174B-442E-9CE7-3D70EA9C9F84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E63AB07C-174B-442E-9CE7-3D70EA9C9F84}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E63AB07C-174B-442E-9CE7-3D70EA9C9F84}.Debug|x86.Build.0 = Debug|Any CPU
+		{E63AB07C-174B-442E-9CE7-3D70EA9C9F84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E63AB07C-174B-442E-9CE7-3D70EA9C9F84}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E63AB07C-174B-442E-9CE7-3D70EA9C9F84}.Release|x86.ActiveCfg = Release|Any CPU
+		{E63AB07C-174B-442E-9CE7-3D70EA9C9F84}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {11E84616-45F8-47C9-ABEE-D1CE2CD65292}
 	EndGlobalSection
 EndGlobal

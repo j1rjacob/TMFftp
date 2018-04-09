@@ -56,6 +56,12 @@
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
     </Reference>
+    <Reference Include="QLicense">
+      <HintPath>..\..\Resources\QLicense-master\Core\QLicense\bin\Debug\QLicense.dll</HintPath>
+    </Reference>
+    <Reference Include="QLicense.Windows.Controls">
+      <HintPath>..\..\Resources\QLicense-master\Core\ActivationControls4Win\bin\Debug\QLicense.Windows.Controls.dll</HintPath>
+    </Reference>
     <Reference Include="Quartz, Version=2.3.3.0, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL">
       <HintPath>..\packages\Quartz.2.3.3\lib\net40\Quartz.dll</HintPath>
     </Reference>
@@ -95,6 +101,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="About.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="About.Designer.cs">
+      <DependentUpon>About.cs</DependentUpon>
+    </Compile>
     <Compile Include="Factories\FTPSFactory.cs" />
     <Compile Include="FirewallTest.cs">
       <SubType>Form</SubType>
@@ -107,6 +119,12 @@
     </Compile>
     <Compile Include="FormMain.Designer.cs">
       <DependentUpon>FormMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmActivation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmActivation.Designer.cs">
+      <DependentUpon>frmActivation.cs</DependentUpon>
     </Compile>
     <Compile Include="FTPManager.cs">
       <SubType>Form</SubType>
@@ -147,11 +165,17 @@
     </Compile>
     <Compile Include="TMFLicensing\TMFLicense.cs" />
     <Compile Include="Util\AutoJob.cs" />
+    <EmbeddedResource Include="About.resx">
+      <DependentUpon>About.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FirewallTest.resx">
       <DependentUpon>FirewallTest.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmActivation.resx">
+      <DependentUpon>frmActivation.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FTPManager.resx">
       <DependentUpon>FTPManager.cs</DependentUpon>
@@ -171,6 +195,7 @@
     <None Include="job_scheduling_data_2_0.xsd">
       <SubType>Designer</SubType>
     </None>
+    <EmbeddedResource Include="LicenseVerify.cer" />
     <None Include="log4net.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -196,6 +221,10 @@
     <ProjectReference Include="..\DBase\DBase.csproj">
       <Project>{bb0f4f76-3722-4b52-ac47-48ebe8a1336a}</Project>
       <Name>DBase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TMFLicense\TMFLicense.csproj">
+      <Project>{fd5091dc-c0ad-40ba-a6c7-b4bb71edd4e9}</Project>
+      <Name>TMFLicense</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -236,14 +265,12 @@
     <Resource Include="Images\flash.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Images\on.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
     <Resource Include="Images\refresh.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Images\cancel-48.png" />
     <Content Include="Images\off-48.png" />
     <Content Include="Images\refresh-48.png" />
     <Content Include="Images\server-48.png" />

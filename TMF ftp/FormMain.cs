@@ -1,9 +1,9 @@
-﻿//(Junar A. Jacob) => Author();
-using Quartz;
+﻿using Quartz;
 using Quartz.Impl;
 using Raccoom.Windows.Forms;
 using System;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -23,7 +23,9 @@ namespace TMF_ftp
         private static string _cmbBox;
 
         private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        private static CancellationTokenSource _cancellationTokenSource;
+        private static CancellationTokenSource _cancellationTokenSourceFtps = new CancellationTokenSource();
+        private static CancellationTokenSource _cancellationTokenSourceSFtp = new CancellationTokenSource();
+        private static Thread threadToCancel = null;
 
         public FormMain()
         {
@@ -31,27 +33,40 @@ namespace TMF_ftp
 
             InitializeComponent();
             Console.SetOut(new ConsoleWriter(richTextBoxDebug));
-	        ComboBoxConnectionType.SelectedIndex = 0;
+            ComboBoxConnectionType.SelectedIndex = 0;
 
-            this.tvFileSystem.DataSource =  new TreeStrategyFolderBrowserProvider();
+            this.tvFileSystem.DataSource = new TreeStrategyFolderBrowserProvider();
 
             this.tvFileSystem.Populate();
             this.tvFileSystem.Nodes[0].Expand();
 
-            if (TMFLicense.Validate())
-            {
-                ButtonDownload.Enabled = true;
-            }
-            else
-            {
-                MessageBox.Show("License not found. Download is disable");
-            }
+            //if (TMFLicense.Validate())
+            //{
+            //    ButtonDownload.Enabled = true;
+            //}
+            //else
+            //{
+            //    MessageBox.Show("License not found. Download is disable");
+            //}
+        }
+        /// <summary>
+        /// External method for checking internet access:
+        /// </summary>
+        [DllImport("wininet.dll")]
+        private extern static bool InternetGetConnectedState(out int Description, int ReservedValue);
+        /// <summary>
+        /// C# callable method to check internet access
+        /// </summary>
+        private static bool IsConnectedToInternet()
+        {
+            return InternetGetConnectedState(out int Description, 0);
         }
         private void FormMain_Load(object sender, EventArgs e)
         {
             try
             {
                 FirewallManager.SetRule("ON");
+                ComboBoxConnectionType.Text = "SFTP";
             }
             catch (Exception ex)
             {
@@ -62,29 +77,50 @@ namespace TMF_ftp
         }
         private void ButtonPlay_Click(object sender, EventArgs e)
         {
-	        _srv = new Ftpx()
-	        {
-		        Host = TextBoxHost.Text,
-		        Username = TextBoxUsername.Text,
-		        Password = TextBoxPassword.Text,
-		        Port = Convert.ToInt32(TextBoxPort.Text),
-		        Type = ComboBoxConnectionType.SelectedText,
-		        Auto = CheckBoxAuto.Checked,
-		        RemoteDirectory = TextBoxRemote.Text,
-		        LocalDirectory = TextBoxDestination.Text
-	        };
-            
+            if (IsConnectedToInternet() == false)
+            {
+                MessageBox.Show("Not connected to internet", "TMF ftp");
+                return;
+            }
+
+            if (string.IsNullOrEmpty(TextBoxHost.Text) ||
+                string.IsNullOrEmpty(TextBoxUsername.Text) ||
+                string.IsNullOrEmpty(TextBoxPassword.Text) ||
+                string.IsNullOrEmpty(TextBoxPort.Text) ||
+                string.IsNullOrEmpty(TextBoxRemote.Text) ||
+                string.IsNullOrEmpty(TextBoxDestination.Text) ||
+                string.IsNullOrEmpty(ComboBoxConnectionType.Text)
+               )
+            {
+                MessageBox.Show("Could not connect, please check server info.", "TMF ftp");
+                return;
+            }
+
+            _srv = new Ftpx()
+            {
+                Host = TextBoxHost.Text,
+                Username = TextBoxUsername.Text,
+                Password = TextBoxPassword.Text,
+                Port = Convert.ToInt32(TextBoxPort.Text),
+                Type = ComboBoxConnectionType.SelectedText,
+                Auto = CheckBoxAuto.Checked,
+                RemoteDirectory = TextBoxRemote.Text,
+                LocalDirectory = TextBoxDestination.Text
+            };
+
             if (ComboBoxConnectionType.Text == "FTPS")
             {
+                Console.WriteLine("Connecting...");
                 GetFTPSRemoteDirectory();
                 //Task.Run(() => GetFTPSService(_srv));
             }
             else if (ComboBoxConnectionType.Text == "SFTP")
             {
-                GetSFTPRemoteDirectory();
+                Console.WriteLine("Connecting...");
+                Console.WriteLine("Try to download");
+                //GetSFTPRemoteDirectory();
                 //Task.Run(() => GetSFTPService(_srv));
             }
-            //SFTPsrv.Download();
         }
         private void GetSFTPService(Ftpx srv)
         {
@@ -124,12 +160,14 @@ namespace TMF_ftp
             RepeatHere:
             try
             {
+                Console.WriteLine("Connecting...");
                 TreeStrategyFTPProvider ftpProvider =
                     new TreeStrategyFTPProvider(_srv.Host, _srv.Port, new NetworkCredential(_srv.Username, _srv.Password));
 
                 tvFolderBrowserSource.DataSource = ftpProvider;
                 tvFolderBrowserSource.Populate();
                 tvFolderBrowserSource.Nodes[0].Expand();
+                Console.WriteLine("Connected.");
             }
             catch (Exception ex)
             {
@@ -142,12 +180,14 @@ namespace TMF_ftp
             RepeatHere:
             try
             {
+                Console.WriteLine("Connecting...");
                 TreeStrategyFTPProvider ftpProvider =
                     new TreeStrategyFTPProvider(_srv.Host, _srv.Port, new NetworkCredential(_srv.Username, _srv.Password));
 
                 tvFolderBrowserSource.DataSource = ftpProvider;
                 tvFolderBrowserSource.Populate();
                 tvFolderBrowserSource.Nodes[0].Expand();
+                Console.WriteLine("Connected.");
             }
             catch (Exception ex)
             {
@@ -157,17 +197,17 @@ namespace TMF_ftp
         }
         private void GetFTPSService(Ftpx srv)
         {
-			RepeatHere:
+            RepeatHere:
             try
             {
                 //FTPSsrv.Connect(_srv);
-                
+
                 //TODO: Check all folder is empty.
                 if (FTPSsrv.CheckDirectory(srv))
                 {
                     goto RepeatHere;
                 }
-                
+
                 //Console.WriteLine("Download Finished");
             }
             catch (System.IO.IOException)
@@ -191,7 +231,7 @@ namespace TMF_ftp
         public static void Test()
         {
             IFtpFactory ftpFactory = new FTPSFactory();
-            IFtp ftp = ftpFactory.CreateFtp("/httpdocs/Test/", "E:\\SecuredFTP\\Test", "stl-amr.com","j1rjacob","ajffJNRX143", 21);
+            IFtp ftp = ftpFactory.CreateFtp("/httpdocs/Test/", "E:\\SecuredFTP\\Test", "stl-amr.com", "j1rjacob", "ajffJNRX143", 21);
             ftp.Connect();
             ftp.DownloadDir();
             ftp.DirIsEmpty("/httpdocs/Test/");
@@ -204,8 +244,19 @@ namespace TMF_ftp
         protected override void OnClosed(EventArgs e)
         {
             FirewallManager.RemoveFirewallRule();
-            _cancellationTokenSource.Cancel();
             _log.Info("Closing the App, Bye.");
+
+            //if (_cmbBox == "FTPS")
+            //{
+            //    _cancellationTokenSourceFtps.Cancel();
+            //    Console.WriteLine("Ftps finish");
+            //}
+            //else if (_cmbBox == "SFTP")
+            //{
+            //    _cancellationTokenSourceSFtp.Cancel();
+            //    Console.WriteLine("Ftps finish");
+            //}
+
             base.OnClosed(e);
             Application.Exit();
         }
@@ -243,74 +294,112 @@ namespace TMF_ftp
         }
         private void ButtonDownload_Click(object sender, EventArgs e)
         {
-            PerformDownload();
-        }
-        private static void GoFTPSDownload(CancellationToken ftpsToken)
-        {
-            while (!ftpsToken.IsCancellationRequested)
+            DialogResult dialogResult = MessageBox.Show("Files in the remote folder will be deleted too. Sure?", "TMF ftp", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
             {
-                if (ftpsToken.IsCancellationRequested)
+                if (_srv != null)
                 {
-                    return;
+                    PerformDownload();
+                    LoadTaskScheduler();
                 }
-                RepeatHere:
-                try
-                {
-                    FTPSsrv.Download(_srv);
+                else
+                    MessageBox.Show("Connect first");
+            }
+            else if (dialogResult == DialogResult.No)
+            {
+                return;
+            }
+        }
+        private void CheckBoxAuto_CheckedChanged(object sender, EventArgs e)
+        {
+            if (CheckBoxAuto.Checked)
+            {
+                LoadTaskScheduler();
+            }
+        }
+        private static void GoFTPSDownload()
+        {
+            //while (!_cancellationTokenSourceFtps.IsCancellationRequested)
+            //{
+            //    if (_cancellationTokenSourceFtps.IsCancellationRequested)
+            //    {
+            //        Console.WriteLine("Download cancelled");
+            //        return;
+            //    }
+            //    else
+            //    {
+                    RepeatHere:
+                    try
+                    {
+                        FTPSsrv.Download(_srv);
 
-                    if (FTPSsrv.CheckDirectory(_srv))
+                        if (FTPSsrv.CheckDirectory(_srv))
+                        {
+                            goto RepeatHere;
+                        }
+                        Console.WriteLine("Download Finished");
+                    }
+                    catch (System.IO.IOException)
                     {
                         goto RepeatHere;
                     }
-                }
-                catch (System.IO.IOException)
-                {
-                    goto RepeatHere;
-                }
-                catch (System.Net.Sockets.SocketException)
-                {
-                    goto RepeatHere;
-                }
-                catch (TimeoutException)
-                {
-                    goto RepeatHere;
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    goto RepeatHere;
-                }
-            }
+                    catch (System.Net.Sockets.SocketException)
+                    {
+                        goto RepeatHere;
+                    }
+                    catch (TimeoutException)
+                    {
+                        goto RepeatHere;
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                        goto RepeatHere;
+                    }
+            //    }
+            //}
         }
         private static void GoSFTPDownload()
         {
-            RepeatHere:
-            try
-            {
-                SFTPsrv.Download(_srv);
+            //while (!_cancellationTokenSourceSFtp.IsCancellationRequested)
+            //{
+            //    if (_cancellationTokenSourceSFtp.IsCancellationRequested)
+            //    {
+            //        Console.WriteLine("Download cancelled");
+            //        return;
+            //    }
+            //    else
+            //    {
+                    RepeatHere:
+                    try
+                    {
+                        SFTPsrv.Download(_srv);
 
-                if (SFTPsrv.CheckDirectory(_srv))
-                {
-                    goto RepeatHere;
-                }
-            }
-            catch (System.IO.IOException)
-            {
-                goto RepeatHere;
-            }
-            catch (System.Net.Sockets.SocketException)
-            {
-                goto RepeatHere;
-            }
-            catch (TimeoutException)
-            {
-                goto RepeatHere;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                goto RepeatHere;
-            }
+                        if (SFTPsrv.CheckDirectory(_srv))
+                        {
+                            goto RepeatHere;
+                        }
+                        Console.WriteLine("Download Finished");
+                    }
+                    catch (System.IO.IOException)
+                    {
+                        goto RepeatHere;
+                    }
+                    catch (System.Net.Sockets.SocketException)
+                    {
+                        goto RepeatHere;
+                    }
+                    catch (TimeoutException)
+                    {
+                        goto RepeatHere;
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                        goto RepeatHere;
+                    }
+            //    }
+            //}
         }
         private void LoadTaskScheduler()
         {
@@ -350,31 +439,36 @@ namespace TMF_ftp
         {
 
         }
-
         private void toolStripButtonRefresh_Click(object sender, EventArgs e)
         {
 
         }
-
-        private void toolStripButtonReconnect_Click(object sender, EventArgs e)
+        private void toolStripButtonCancel_Click(object sender, EventArgs e)
         {
+            if (_cmbBox == "FTPS" && _cancellationTokenSourceFtps != null)
+            {
+                Console.WriteLine("FTPS");
 
+                _cancellationTokenSourceFtps.Cancel();
+            }
+            else if (_cmbBox == "SFTP" && _cancellationTokenSourceSFtp != null)
+            {
+                Console.WriteLine("SFTP");
+
+                _cancellationTokenSourceSFtp.Cancel();
+            }
         }
-
         private void toolStripButtonDisconnect_Click(object sender, EventArgs e)
         {
 
         }
-
         private void toolStripButtonLicense_Click(object sender, EventArgs e)
         {
             var validateDialog = new Register();
             validateDialog.evtFrm += new ShowFrm(EnableDownload);
             validateDialog.ShowDialog();
         }
-
         #endregion
-
         private void EnableDownload()
         {
             ButtonDownload.Enabled = true;
@@ -383,17 +477,20 @@ namespace TMF_ftp
         {
             if (_cmbBox == "FTPS")
             {
-                _cancellationTokenSource = new CancellationTokenSource();
-                CancellationToken token = _cancellationTokenSource.Token;
-                
-                Task.Run(() => GoFTPSDownload(token));
+                //_cancellationTokenSourceFtps = new CancellationTokenSource();
+                //CancellationToken token = _cancellationTokenSourceFtps.Token;
+
+                //Task t = new Task(() => GoFTPSDownload(), _token);
+                //t.Start();
+                Task.Factory.StartNew(GoFTPSDownload);
             }
             else if (_cmbBox == "SFTP")
             {
-                _cancellationTokenSource = new CancellationTokenSource();
-                CancellationToken token = _cancellationTokenSource.Token;
-                _cancellationTokenSource.Cancel();
-                Task.Run(() => GoSFTPDownload(), token);
+                //_cancellationTokenSourceSFtp = new CancellationTokenSource();
+                //CancellationToken token = _cancellationTokenSourceSFtp.Token;
+
+                //Task.Run(() => GoSFTPDownload(token));
+                Task.Factory.StartNew(GoSFTPDownload);
             }
         }
     }

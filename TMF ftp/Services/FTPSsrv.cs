@@ -7,8 +7,9 @@ using TMF_ftp.Models;
 
 namespace TMF_ftp.Services
 {
-    public static class FTPSsrv
+    public static class FTPSsrv 
     {
+
         static FTPSsrv()
         {
             Debug.LogToCustomListener();
@@ -101,7 +102,7 @@ namespace TMF_ftp.Services
             {
                 client.DownloadFile(destination + "\\" + file.Name, file.FullName, true, FtpVerify.OnlyChecksum);
                 Console.WriteLine($"Successful download: {file.FullName}"); //TODO Write to logs
-                client.DeleteFile(file.FullName);
+                //client.DeleteFile(file.FullName);
             }
             catch (Exception e)
             {
