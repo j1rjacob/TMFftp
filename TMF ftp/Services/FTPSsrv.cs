@@ -9,7 +9,6 @@ namespace TMF_ftp.Services
 {
     public static class FTPSsrv 
     {
-
         static FTPSsrv()
         {
             Debug.LogToCustomListener();

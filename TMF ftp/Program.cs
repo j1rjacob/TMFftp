@@ -13,9 +13,9 @@ namespace TMF_ftp
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new FormMain());
+            Application.Run(new FormMain());
             //Application.Run(new frmActivation());
-            Application.Run(new About());
+            //Application.Run(new About());
         }
     }
 }

@@ -75,7 +75,7 @@
             this.Controls.Add(this.grpbxLicSettings);
             this.Controls.Add(this.licString);
             this.Name = "frmMain";
-            this.Text = "Main";
+            this.Text = "Main Activitor";
             this.Load += new System.EventHandler(this.frmMain_Load);
             this.grpbxLicSettings.ResumeLayout(false);
             this.ResumeLayout(false);

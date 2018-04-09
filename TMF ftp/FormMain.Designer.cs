@@ -266,7 +266,6 @@
             // 
             // ButtonDownload
             // 
-            this.ButtonDownload.Enabled = false;
             this.ButtonDownload.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ButtonDownload.Location = new System.Drawing.Point(286, 7);
             this.ButtonDownload.Name = "ButtonDownload";
@@ -449,6 +448,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "TMF ftp";
             this.Load += new System.EventHandler(this.FormMain_Load);
+            this.Shown += new System.EventHandler(this.FormMain_Shown);
             this.panel1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();

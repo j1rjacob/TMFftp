@@ -101,19 +101,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="About.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="About.Designer.cs">
-      <DependentUpon>About.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Factories\FTPSFactory.cs" />
-    <Compile Include="FirewallTest.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FirewallTest.Designer.cs">
-      <DependentUpon>FirewallTest.cs</DependentUpon>
-    </Compile>
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -135,9 +122,7 @@
     <Compile Include="Helpers\ConsoleWriter.cs" />
     <Compile Include="Helpers\Debug.cs" />
     <Compile Include="Helpers\FirewallManager.cs" />
-    <Compile Include="Helpers\TMFHelper.cs" />
     <Compile Include="Interfaces\IFtp.cs" />
-    <Compile Include="Interfaces\IFtpFactory.cs" />
     <Compile Include="Models\FilePath.cs" />
     <Compile Include="Models\Ftpx.cs" />
     <Compile Include="Program.cs" />
@@ -147,30 +132,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Services\Class1.cs" />
     <Compile Include="Services\FTPSsrv.cs" />
-    <Compile Include="Services\FTPSsrv1.cs" />
     <Compile Include="Services\SFTPsrv.cs" />
-    <Compile Include="TMFLicensing\Generator.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TMFLicensing\Generator.Designer.cs">
-      <DependentUpon>Generator.cs</DependentUpon>
-    </Compile>
-    <Compile Include="TMFLicensing\Register.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TMFLicensing\Register.Designer.cs">
-      <DependentUpon>Register.cs</DependentUpon>
-    </Compile>
-    <Compile Include="TMFLicensing\TMFLicense.cs" />
     <Compile Include="Util\AutoJob.cs" />
-    <EmbeddedResource Include="About.resx">
-      <DependentUpon>About.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FirewallTest.resx">
-      <DependentUpon>FirewallTest.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
     </EmbeddedResource>
@@ -184,12 +148,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TMFLicensing\Generator.resx">
-      <DependentUpon>Generator.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TMFLicensing\Register.resx">
-      <DependentUpon>Register.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.manifest" />
     <None Include="job_scheduling_data_2_0.xsd">
@@ -213,15 +171,8 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Dtos\" />
-    <Folder Include="Logs\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\DBase\DBase.csproj">
-      <Project>{bb0f4f76-3722-4b52-ac47-48ebe8a1336a}</Project>
-      <Name>DBase</Name>
-    </ProjectReference>
     <ProjectReference Include="..\TMFLicense\TMFLicense.csproj">
       <Project>{fd5091dc-c0ad-40ba-a6c7-b4bb71edd4e9}</Project>
       <Name>TMFLicense</Name>
