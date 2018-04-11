@@ -42,14 +42,10 @@ namespace TMF_ftp
             this.tvFileSystem.Populate();
             this.tvFileSystem.Nodes[0].Expand();
         }
-        /// <summary>
-        /// External method for checking internet access:
-        /// </summary>
+        
         [DllImport("wininet.dll")]
         private extern static bool InternetGetConnectedState(out int Description, int ReservedValue);
-        /// <summary>
-        /// C# callable method to check internet access
-        /// </summary>
+        
         private static bool IsConnectedToInternet()
         {
             return InternetGetConnectedState(out int Description, 0);
@@ -63,7 +59,7 @@ namespace TMF_ftp
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex); //Write to logs
+                Console.WriteLine(ex);
                 _log.Error(ex);
                 throw;
             }
@@ -105,14 +101,11 @@ namespace TMF_ftp
             {
                 Console.WriteLine("Connecting...");
                 GetFTPSRemoteDirectory();
-                //Task.Run(() => GetFTPSService(_srv));
             }
             else if (ComboBoxConnectionType.Text == "SFTP")
             {
                 Console.WriteLine("Connecting...");
                 Console.WriteLine("Try to download");
-                //GetSFTPRemoteDirectory();
-                //Task.Run(() => GetSFTPService(_srv));
             }
         }
         private void GetFTPSRemoteDirectory()
@@ -144,17 +137,6 @@ namespace TMF_ftp
         {
             FirewallManager.RemoveFirewallRule();
             _log.Info("Closing the App, Bye.");
-
-            //if (_cmbBox == "FTPS")
-            //{
-            //    _cancellationTokenSourceFtps.Cancel();
-            //    Console.WriteLine("Ftps finish");
-            //}
-            //else if (_cmbBox == "SFTP")
-            //{
-            //    _cancellationTokenSourceSFtp.Cancel();
-            //    Console.WriteLine("Ftps finish");
-            //}
 
             base.OnClosed(e);
             Application.Exit();
@@ -218,45 +200,34 @@ namespace TMF_ftp
         }
         private static void GoFTPSDownload()
         {
-            //while (!_cancellationTokenSourceFtps.IsCancellationRequested)
-            //{
-            //    if (_cancellationTokenSourceFtps.IsCancellationRequested)
-            //    {
-            //        Console.WriteLine("Download cancelled");
-            //        return;
-            //    }
-            //    else
-            //    {
-                    RepeatHere:
-                    try
-                    {
-                        FTPSsrv.Download(_srv);
+            RepeatHere:
+            try
+            {
+                FTPSsrv.Download(_srv);
 
-                        if (FTPSsrv.CheckDirectory(_srv))
-                        {
-                            goto RepeatHere;
-                        }
-                        Console.WriteLine("Download Finished");
-                    }
-                    catch (System.IO.IOException)
-                    {
-                        goto RepeatHere;
-                    }
-                    catch (System.Net.Sockets.SocketException)
-                    {
-                        goto RepeatHere;
-                    }
-                    catch (TimeoutException)
-                    {
-                        goto RepeatHere;
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex.Message);
-                        goto RepeatHere;
-                    }
-            //    }
-            //}
+                if (FTPSsrv.CheckDirectory(_srv))
+                {
+                    goto RepeatHere;
+                }
+                Console.WriteLine("Download Finished");
+            }
+            catch (System.IO.IOException)
+            {
+                goto RepeatHere;
+            }
+            catch (System.Net.Sockets.SocketException)
+            {
+                goto RepeatHere;
+            }
+            catch (TimeoutException)
+            {
+                goto RepeatHere;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                goto RepeatHere;
+            }
         }
         private static void GoSFTPDownload()
         {
@@ -269,34 +240,34 @@ namespace TMF_ftp
             //    }
             //    else
             //    {
-                    RepeatHere:
-                    try
-                    {
-                        SFTPsrv.Download(_srv);
+            RepeatHere:
+            try
+            {
+                SFTPsrv.Download(_srv);
 
-                        if (SFTPsrv.CheckDirectory(_srv))
-                        {
-                            goto RepeatHere;
-                        }
-                        Console.WriteLine("Download Finished");
-                    }
-                    catch (System.IO.IOException)
-                    {
-                        goto RepeatHere;
-                    }
-                    catch (System.Net.Sockets.SocketException)
-                    {
-                        goto RepeatHere;
-                    }
-                    catch (TimeoutException)
-                    {
-                        goto RepeatHere;
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex.Message);
-                        goto RepeatHere;
-                    }
+                if (SFTPsrv.CheckDirectory(_srv))
+                {
+                    goto RepeatHere;
+                }
+                Console.WriteLine("Download Finished");
+            }
+            catch (System.IO.IOException)
+            {
+                goto RepeatHere;
+            }
+            catch (System.Net.Sockets.SocketException)
+            {
+                goto RepeatHere;
+            }
+            catch (TimeoutException)
+            {
+                goto RepeatHere;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                goto RepeatHere;
+            }
             //    }
             //}
         }
@@ -355,10 +326,6 @@ namespace TMF_ftp
         }
         private void toolStripButtonLicense_Click(object sender, EventArgs e)
         {
-            //var validateDialog = new Register();
-            //validateDialog.evtFrm += new ShowFrm(EnableDownload);
-            //validateDialog.ShowDialog();
-
             var validateDiaglog = new frmActivation();
             validateDiaglog.ShowDialog();
         }
@@ -367,19 +334,10 @@ namespace TMF_ftp
         {
             if (_cmbBox == "FTPS")
             {
-                //_cancellationTokenSourceFtps = new CancellationTokenSource();
-                //CancellationToken token = _cancellationTokenSourceFtps.Token;
-
-                //Task t = new Task(() => GoFTPSDownload(), _token);
-                //t.Start();
                 Task.Factory.StartNew(GoFTPSDownload);
             }
             else if (_cmbBox == "SFTP")
             {
-                //_cancellationTokenSourceSFtp = new CancellationTokenSource();
-                //CancellationToken token = _cancellationTokenSourceSFtp.Token;
-
-                //Task.Run(() => GoSFTPDownload(token));
                 Task.Factory.StartNew(GoSFTPDownload);
             }
         }
@@ -423,24 +381,16 @@ namespace TMF_ftp
                     //TODO: E.g., check license expiry date if you have added expiry date property to your license entity
                     //TODO: Also, you can set feature switch here based on the different properties you added to your license entity 
 
-                    //Here for demo, just show the license information and RETURN without additional checking       
-                    //licInfo.ShowLicenseInfo(_lic);
-
                     return;
 
                 default:
-                    //for the other status of license file, show the warning message
-                    //and also popup the activation form for user to activate your application
+                    
                     MessageBox.Show(_msg, string.Empty, MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
                     using (frmActivation frm = new frmActivation())
                     {
                         frm.CertificatePublicKeyData = _certPubicKeyData;
                         frm.ShowDialog();
-
-                        //Exit the application after activation to reload the license file 
-                        //Actually it is not nessessary, you may just call the API to reload the license file
-                        //Here just simplied the demo process
 
                         Application.Exit();
                     }

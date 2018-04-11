@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.dlgSaveFile = new System.Windows.Forms.SaveFileDialog();
             this.grpbxLicSettings = new System.Windows.Forms.GroupBox();
             this.licSettings = new QLicense.Windows.Controls.LicenseSettingsControl();
@@ -74,7 +75,9 @@
             this.ClientSize = new System.Drawing.Size(693, 449);
             this.Controls.Add(this.grpbxLicSettings);
             this.Controls.Add(this.licString);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmMain";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Main Activitor";
             this.Load += new System.EventHandler(this.frmMain_Load);
             this.grpbxLicSettings.ResumeLayout(false);

@@ -1,30 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
-	<Product Id="*" Name="SetupProject" Language="1033" Version="1.0.0.0" Manufacturer="" UpgradeCode="64e9bc32-7700-4f8d-986f-02cfe0a5de4a">
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"><?define TMFActivitionTool_TargetDir=$(var.TMFActivitionTool.TargetDir)?>
+	<Product Id="*" Name="TMF ftp Activitor" Language="1033" Version="1.0.0.0" Manufacturer="TMF" UpgradeCode="e42ae07f-ac0b-46dd-96dd-bb3dc8bbd9a5">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
-
+	  <Icon Id="icon.ico" SourceFile="$(var.ProjectDir)Icon.ico" />
+	  <Property Id="ARPPRODUCTICON" Value="icon.ico" />
+	  <WixVariable Id="WixUILicenseRtf" Value="$(var.ProjectDir)\gpl-3.0.rtf" />
+	  
+	  <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
+	  <UIRef Id="WixUI_InstallDir" />
+    
 		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
-		<MediaTemplate />
+		<MediaTemplate EmbedCab="yes" />
 
-		<Feature Id="ProductFeature" Title="SetupProject" Level="1">
+		<Feature Id="ProductFeature" Title="TMF ftp Activitor" Level="1">
 			<ComponentGroupRef Id="ProductComponents" />
+		  <ComponentRef Id="ApplicationShortcut" />
+		  <ComponentRef Id="ApplicationShortcutDesktop" />
 		</Feature>
 	</Product>
 
 	<Fragment>
 		<Directory Id="TARGETDIR" Name="SourceDir">
 			<Directory Id="ProgramFilesFolder">
-				<Directory Id="INSTALLFOLDER" Name="SetupProject" />
+				<Directory Id="INSTALLFOLDER" Name="TMF ftp Activitor" />
 			</Directory>
-		</Directory>
+			<Directory Id="ProgramMenuFolder">
+				<Directory Id="ApplicationProgramsFolder" Name="TMF ftp Activitor" />
+			</Directory>
+		  <Directory Id="DesktopFolder" Name="Desktop" />
+    </Directory>
 	</Fragment>
 
+  <Fragment>
+    <DirectoryRef Id="ApplicationProgramsFolder">
+      <Component Id="ApplicationShortcut" Guid="9bd13330-6540-406f-a3a8-d7f7c69ae7f9">
+        <Shortcut Id="ApplicationStartMenuShortcut" Name="TMF ftp Activitor" Description="TMF ftp Activitor" Target="[INSTALLFOLDER]TMFActivitionTool.exe" WorkingDirectory="INSTALLFOLDER" />
+        <RemoveFolder Id="RemoveApplicationProgramsFolder" Directory="ApplicationProgramsFolder" On="uninstall" />
+        <RegistryValue Root="HKCU" Key="Software\TMF ftp Activitor" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+    </DirectoryRef>
+    <DirectoryRef Id="DesktopFolder">
+      <Component Id="ApplicationShortcutDesktop" Guid="cde1e030-eb64-49a5-b7b8-400b379c2d1a">
+        <Shortcut Id="ApplicationDesktopShortcut" Name="TMF ftp Activitor" Description="TMF ftp Activitor" Target="[INSTALLFOLDER]TMFActivitionTool.exe" WorkingDirectory="INSTALLFOLDER" />
+        <RemoveFolder Id="RemoveDesktopFolder" Directory="DesktopFolder" On="uninstall" />
+        <RegistryValue Root="HKCU" Key="Software\TMF ftp Activitor" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+    </DirectoryRef>
+  </Fragment>
+  
 	<Fragment>
 		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
 			<!-- TODO: Remove the comments around this Component element and the ComponentRef below in order to add resources to this installer. -->
 			<!-- <Component Id="ProductComponent"> -->
 				<!-- TODO: Insert files, registry keys, and other resources here. -->
 			<!-- </Component> -->
+			<Component Id="TMFActivitionTool.exe" Guid="30781dfa-e4dd-43f9-837c-200de1404e22">
+			  <File Id="TMFActivitionTool.exe" Name="TMFActivitionTool.exe" Source="$(var.TMFActivitionTool_TargetDir)TMFActivitionTool.exe" />
+			</Component>
+			<Component Id="TMFActivitionTool.exe.config" Guid="1788c940-ae80-4c5c-91fd-1a9d04c5012b">
+			  <File Id="TMFActivitionTool.exe.config" Name="TMFActivitionTool.exe.config" Source="$(var.TMFActivitionTool_TargetDir)TMFActivitionTool.exe.config" />
+			</Component>
+			<Component Id="QLicense.dll" Guid="3e4c4538-4860-4d5f-bf1f-90fbe45fa08b">
+			  <File Id="QLicense.dll" Name="QLicense.dll" Source="$(var.TMFActivitionTool_TargetDir)QLicense.dll" />
+			</Component>
+			<Component Id="QLicense.Windows.Controls.dll" Guid="cc52165f-1056-4c92-aaeb-677085f80300">
+			  <File Id="QLicense.Windows.Controls.dll" Name="QLicense.Windows.Controls.dll" Source="$(var.TMFActivitionTool_TargetDir)QLicense.Windows.Controls.dll" />
+			</Component>
+			<Component Id="TMFLicense.dll" Guid="992c4cb4-204c-42bc-8832-22551fbbaf2b">
+			  <File Id="TMFLicense.dll" Name="TMFLicense.dll" Source="$(var.TMFActivitionTool_TargetDir)TMFLicense.dll" />
+			</Component>
 		</ComponentGroup>
 	</Fragment>
 </Wix>

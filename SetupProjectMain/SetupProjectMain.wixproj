@@ -4,9 +4,9 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>3.10</ProductVersion>
-    <ProjectGuid>318602fa-99c7-4c43-b03f-37621243a15f</ProjectGuid>
+    <ProjectGuid>1f56aa1e-7a6f-424e-9d39-55c357db4fb5</ProjectGuid>
     <SchemaVersion>2.0</SchemaVersion>
-    <OutputName>TMF ftp Activitor</OutputName>
+    <OutputName>TMF ftp</OutputName>
     <OutputType>Package</OutputType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -24,13 +24,12 @@
   <ItemGroup>
     <Content Include="gpl-3.0.rtf" />
     <Content Include="Icon.ico" />
-    <Content Include="License.rtf" />
-    <Content Include="SetupProject.wax" />
+    <Content Include="SetupProjectMain.wax" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TMFActivitionTool\TMFActivitionTool.csproj">
-      <Name>TMFActivitionTool</Name>
-      <Project>{e63ab07c-174b-442e-9ce7-3d70ea9c9f84}</Project>
+    <ProjectReference Include="..\TMF ftp\TMF ftp.csproj">
+      <Name>TMF ftp</Name>
+      <Project>{bc4bb011-7602-4bca-9260-57a90203ea7c}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
@@ -38,29 +37,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <WixExtension Include="WixUtilExtension">
-      <HintPath>$(WixExtDir)\WixUtilExtension.dll</HintPath>
-      <Name>WixUtilExtension</Name>
-    </WixExtension>
-    <WixExtension Include="WixUtilExtension">
-      <HintPath>$(WixExtDir)\WixUtilExtension.dll</HintPath>
-      <Name>WixUtilExtension</Name>
-    </WixExtension>
-    <WixExtension Include="WixUtilExtension">
-      <HintPath>$(WixExtDir)\WixUtilExtension.dll</HintPath>
-      <Name>WixUtilExtension</Name>
-    </WixExtension>
     <WixExtension Include="WixUIExtension">
       <HintPath>$(WixExtDir)\WixUIExtension.dll</HintPath>
       <Name>WixUIExtension</Name>
     </WixExtension>
-    <WixExtension Include="WixUIExtension">
-      <HintPath>$(WixExtDir)\WixUIExtension.dll</HintPath>
-      <Name>WixUIExtension</Name>
-    </WixExtension>
-    <WixExtension Include="WixUIExtension">
-      <HintPath>$(WixExtDir)\WixUIExtension.dll</HintPath>
-      <Name>WixUIExtension</Name>
+    <WixExtension Include="WixUtilExtension">
+      <HintPath>$(WixExtDir)\WixUtilExtension.dll</HintPath>
+      <Name>WixUtilExtension</Name>
     </WixExtension>
   </ItemGroup>
   <Import Project="$(WixTargetsPath)" Condition=" '$(WixTargetsPath)' != '' " />

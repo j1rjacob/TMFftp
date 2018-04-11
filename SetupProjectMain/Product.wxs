@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"><?define TMF ftp_TargetDir=$(var.TMF ftp.TargetDir)?>
+	<Product Id="*" Name="TMF ftp" Language="1033" Version="1.0.0.0" Manufacturer="TMF" UpgradeCode="14f1338f-3cf9-48ad-b1d8-23e98d32e50c">
+	  <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+	  <Icon Id="icon.ico" SourceFile="$(var.ProjectDir)Icon.ico" />
+	  <Property Id="ARPPRODUCTICON" Value="icon.ico" />
+	  <WixVariable Id="WixUILicenseRtf" Value="$(var.ProjectDir)\gpl-3.0.rtf" />
+	  
+	  <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
+	  <UIRef Id="WixUI_InstallDir" />
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+	  <MediaTemplate EmbedCab="yes" />
+    
+		<Feature Id="ProductFeature" Title="TMF ftp" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+			<ComponentGroupRef Id="Images_files" />
+		  <ComponentRef Id="ApplicationShortcut" />
+		  <ComponentRef Id="ApplicationShortcutDesktop" />
+		</Feature>
+	</Product>
+
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+				<Directory Id="INSTALLFOLDER" Name="TMF ftp">
+				  <Directory Id="Images" Name="Images" />
+				</Directory>
+			</Directory>
+		  <Directory Id="ProgramMenuFolder">
+		    <Directory Id="ApplicationProgramsFolder" Name="TMF ftp" />
+		  </Directory>
+		  <Directory Id="DesktopFolder" Name="Desktop" />
+		</Directory>
+	</Fragment>
+
+  <Fragment>
+    <DirectoryRef Id="ApplicationProgramsFolder">
+      <Component Id="ApplicationShortcut" Guid="c53a4ed1-8961-485d-bb6d-b37cb0b7dcf0">
+        <Shortcut Id="ApplicationStartMenuShortcut" Name="TMF ftp" Description="TMF ftp" Target="[INSTALLFOLDER]TMF ftp.exe" WorkingDirectory="INSTALLFOLDER" />
+        <RemoveFolder Id="RemoveApplicationProgramsFolder" Directory="ApplicationProgramsFolder" On="uninstall" />
+        <RegistryValue Root="HKCU" Key="Software\TMF ftp" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+    </DirectoryRef>
+    <DirectoryRef Id="DesktopFolder">
+      <Component Id="ApplicationShortcutDesktop" Guid="22eabcf7-2319-4b7a-96f3-c799e2b8dc9d">
+        <Shortcut Id="ApplicationDesktopShortcut" Name="TMF ftp" Description="TMF ftp" Target="[INSTALLFOLDER]TMF ftp.exe" WorkingDirectory="INSTALLFOLDER" />
+        <RemoveFolder Id="RemoveDesktopFolder" Directory="DesktopFolder" On="uninstall" />
+        <RegistryValue Root="HKCU" Key="Software\TMF ftp" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+    </DirectoryRef>
+  </Fragment>
+    
+	<Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+			<!-- TODO: Remove the comments around this Component element and the ComponentRef below in order to add resources to this installer. -->
+			<!-- <Component Id="ProductComponent"> -->
+				<!-- TODO: Insert files, registry keys, and other resources here. -->
+			<!-- </Component> -->
+			<Component Id="TMF_ftp.exe" Guid="10b99396-fe76-4ee8-ab1b-14cc7c7ee1ed">
+			  <File Id="TMF_ftp.exe" Name="TMF ftp.exe" Source="$(var.TMF ftp_TargetDir)TMF ftp.exe" />
+			</Component>
+			<Component Id="TMF_ftp.exe.config" Guid="47886924-d9ab-4023-89db-f3b5f61193e7">
+			  <File Id="TMF_ftp.exe.config" Name="TMF ftp.exe.config" Source="$(var.TMF ftp_TargetDir)TMF ftp.exe.config" />
+			</Component>
+			<Component Id="Common.Logging.dll" Guid="34c31ee0-aafe-4d51-8086-725f135428ae">
+			  <File Id="Common.Logging.dll" Name="Common.Logging.dll" Source="$(var.TMF ftp_TargetDir)Common.Logging.dll" />
+			</Component>
+			<Component Id="Common.Logging.Core.dll" Guid="f408f800-5b44-4ff7-b921-49011515a02e">
+			  <File Id="Common.Logging.Core.dll" Name="Common.Logging.Core.dll" Source="$(var.TMF ftp_TargetDir)Common.Logging.Core.dll" />
+			</Component>
+			<Component Id="FluentFTP.dll" Guid="257759a3-9e09-4e7c-828d-832c7fa15905">
+			  <File Id="FluentFTP.dll" Name="FluentFTP.dll" Source="$(var.TMF ftp_TargetDir)FluentFTP.dll" />
+			</Component>
+			<Component Id="log4net.dll" Guid="d1eaefa9-9c77-49e0-93c6-dc93e4eb7f81">
+			  <File Id="log4net.dll" Name="log4net.dll" Source="$(var.TMF ftp_TargetDir)log4net.dll" />
+			</Component>
+			<Component Id="QLicense.dll" Guid="651f9fed-6205-4c50-bb5e-7c7742866543">
+			  <File Id="QLicense.dll" Name="QLicense.dll" Source="$(var.TMF ftp_TargetDir)QLicense.dll" />
+			</Component>
+			<Component Id="QLicense.Windows.Controls.dll" Guid="7c5ff24f-d8cc-44b5-905c-b79aee8658b4">
+			  <File Id="QLicense.Windows.Controls.dll" Name="QLicense.Windows.Controls.dll" Source="$(var.TMF ftp_TargetDir)QLicense.Windows.Controls.dll" />
+			</Component>
+			<Component Id="Quartz.dll" Guid="78ab0f7c-0260-4625-8fb9-c1cb92b6a9f1">
+			  <File Id="Quartz.dll" Name="Quartz.dll" Source="$(var.TMF ftp_TargetDir)Quartz.dll" />
+			</Component>
+			<Component Id="Raccoom.TreeViewFolderBrowser.dll" Guid="c2fd30a9-7dff-463b-8122-9ef390b9c630">
+			  <File Id="Raccoom.TreeViewFolderBrowser.dll" Name="Raccoom.TreeViewFolderBrowser.dll" Source="$(var.TMF ftp_TargetDir)Raccoom.TreeViewFolderBrowser.dll" />
+			</Component>
+			<Component Id="Raccoom.TreeViewFolderBrowser.DataProviders.dll" Guid="7008f553-2cee-473b-9efe-3af658f9e833">
+			  <File Id="Raccoom.TreeViewFolderBrowser.DataProviders.dll" Name="Raccoom.TreeViewFolderBrowser.DataProviders.dll" Source="$(var.TMF ftp_TargetDir)Raccoom.TreeViewFolderBrowser.DataProviders.dll" />
+			</Component>
+			<Component Id="Renci.SshNet.dll" Guid="42a6b93b-f7ad-48db-b48f-88a632bbaac8">
+			  <File Id="Renci.SshNet.dll" Name="Renci.SshNet.dll" Source="$(var.TMF ftp_TargetDir)Renci.SshNet.dll" />
+			</Component>
+			<Component Id="Standard.Licensing.dll" Guid="03462cbe-5315-414a-a56e-cf0c1ff1aa87">
+			  <File Id="Standard.Licensing.dll" Name="Standard.Licensing.dll" Source="$(var.TMF ftp_TargetDir)Standard.Licensing.dll" />
+			</Component>
+			<Component Id="TMFLicense.dll" Guid="ca22dc2a-e663-473f-92aa-7338041c035d">
+			  <File Id="TMFLicense.dll" Name="TMFLicense.dll" Source="$(var.TMF ftp_TargetDir)TMFLicense.dll" />
+			</Component>
+		</ComponentGroup>
+	</Fragment>
+	<Fragment>
+	  <ComponentGroup Id="Images_files" Directory="Images">
+	    <Component Id="Images_cancel_48.png" Guid="ab7e265f-e970-4dce-a8ec-3e052f0140c7">
+	      <File Id="Images_cancel_48.png" Name="cancel-48.png" Source="$(var.TMF ftp_TargetDir)Images\cancel-48.png" />
+	    </Component>
+	    <Component Id="Images_off_48.png" Guid="6969fbfa-c0a2-4b00-bf85-cbc0a249b167">
+	      <File Id="Images_off_48.png" Name="off-48.png" Source="$(var.TMF ftp_TargetDir)Images\off-48.png" />
+	    </Component>
+	    <Component Id="Images_refresh_48.png" Guid="1c7f426b-b1cc-40ed-9df1-9b8ef8044408">
+	      <File Id="Images_refresh_48.png" Name="refresh-48.png" Source="$(var.TMF ftp_TargetDir)Images\refresh-48.png" />
+	    </Component>
+	    <Component Id="Images_server_48.png" Guid="82b3e75c-9532-44e2-be77-cc5acc7fe5a3">
+	      <File Id="Images_server_48.png" Name="server-48.png" Source="$(var.TMF ftp_TargetDir)Images\server-48.png" />
+	    </Component>
+	    <Component Id="Images_key_48.png" Guid="16ef99bb-c983-46fa-ac67-f95ff6ebb045">
+	      <File Id="Images_key_48.png" Name="key-48.png" Source="$(var.TMF ftp_TargetDir)Images\key-48.png" />
+	    </Component>
+	  </ComponentGroup>
+	</Fragment>
+</Wix>
