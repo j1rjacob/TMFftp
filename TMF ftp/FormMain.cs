@@ -175,7 +175,7 @@ namespace TMF_ftp
         }
         private void ButtonDownload_Click(object sender, EventArgs e)
         {
-            DialogResult dialogResult = MessageBox.Show("Files in the remote folder will be deleted too. Sure?", "TMF ftp", MessageBoxButtons.YesNo);
+            DialogResult dialogResult = MessageBox.Show("Files in the remote folder will be deleted too. Sure?", "TMF ftp", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (dialogResult == DialogResult.Yes)
             {
                 if (_srv != null)
@@ -370,13 +370,12 @@ namespace TMF_ftp
             else
             {
                 _status = LicenseStatus.INVALID;
-                _msg = "Your copy of this application is not activated";
+                _msg = "This application is not activated";
             }
 
             switch (_status)
             {
                 case LicenseStatus.VALID:
-
                     //TODO: If license is valid, you can do extra checking here
                     //TODO: E.g., check license expiry date if you have added expiry date property to your license entity
                     //TODO: Also, you can set feature switch here based on the different properties you added to your license entity 
@@ -385,7 +384,7 @@ namespace TMF_ftp
 
                 default:
                     
-                    MessageBox.Show(_msg, string.Empty, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show(_msg, "TMF ftp", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
                     using (frmActivation frm = new frmActivation())
                     {

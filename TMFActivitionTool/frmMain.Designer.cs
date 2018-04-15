@@ -56,7 +56,7 @@
             this.licSettings.AllowVolumeLicense = true;
             this.licSettings.Location = new System.Drawing.Point(3, 17);
             this.licSettings.Name = "licSettings";
-            this.licSettings.Size = new System.Drawing.Size(328, 427);
+            this.licSettings.Size = new System.Drawing.Size(328, 183);
             this.licSettings.TabIndex = 7;
             this.licSettings.OnLicenseGenerated += new QLicense.Windows.Controls.LicenseGeneratedHandler(this.licSettings_OnLicenseGenerated);
             // 
@@ -78,7 +78,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Main Activitor";
+            this.Text = "License Generator";
             this.Load += new System.EventHandler(this.frmMain_Load);
             this.grpbxLicSettings.ResumeLayout(false);
             this.ResumeLayout(false);

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"><?define TMFActivitionTool_TargetDir=$(var.TMFActivitionTool.TargetDir)?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension"><?define TMFActivitionTool_TargetDir=$(var.TMFActivitionTool.TargetDir)?>
 	<Product Id="*" Name="TMF ftp Activitor" Language="1033" Version="1.0.0.0" Manufacturer="TMF" UpgradeCode="e42ae07f-ac0b-46dd-96dd-bb3dc8bbd9a5">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 	  <Icon Id="icon.ico" SourceFile="$(var.ProjectDir)Icon.ico" />
@@ -17,6 +17,11 @@
 		  <ComponentRef Id="ApplicationShortcut" />
 		  <ComponentRef Id="ApplicationShortcutDesktop" />
 		</Feature>
+
+	  <PropertyRef Id="WIX_IS_NETFRAMEWORK_462_OR_LATER_INSTALLED"/>
+	  <Condition Message="This application requires .NET Framework 4.6.2 Please install the .NET Framework then run this installer again.">
+	    <![CDATA[Installed OR WIX_IS_NETFRAMEWORK_462_OR_LATER_INSTALLED]]>
+	  </Condition>
 	</Product>
 
 	<Fragment>

@@ -79,6 +79,7 @@
     <Reference Include="System.Numerics" />
     <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -95,6 +96,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\SmartDB.cs" />
+    <Compile Include="Core\SqlHelper.cs" />
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -116,6 +119,10 @@
     <Compile Include="Helpers\ConsoleWriter.cs" />
     <Compile Include="Helpers\Debug.cs" />
     <Compile Include="Helpers\FirewallManager.cs" />
+    <Compile Include="Imports\BulkOMS.cs" />
+    <Compile Include="Imports\BulkRDS.cs" />
+    <Compile Include="Imports\FetchTable.cs" />
+    <Compile Include="Imports\MakeTable.cs" />
     <Compile Include="Interfaces\IFtp.cs" />
     <Compile Include="Models\FilePath.cs" />
     <Compile Include="Models\Ftpx.cs" />
@@ -130,6 +137,7 @@
     <Compile Include="Services\FTPSsrv1.cs" />
     <Compile Include="Services\SFTPsrv.cs" />
     <Compile Include="Util\AutoJob.cs" />
+    <Compile Include="Util\Timex.cs" />
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
     </EmbeddedResource>
@@ -164,9 +172,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
   <ItemGroup>
     <COMReference Include="NATUPNPLib">
       <Guid>{1C565858-F302-471E-B409-F180AA4ABEC6}</Guid>
@@ -230,6 +242,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
