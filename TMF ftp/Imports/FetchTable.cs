@@ -25,9 +25,8 @@ namespace TMF_ftp.Imports
 
                         DataTable rds = ds.Tables["tblRDS"];
 
-                        IEnumerable<DataRow> query =
-                            from g in rds.AsEnumerable()
-                            select g;
+                        IEnumerable<DataRow> query = from g in rds.AsEnumerable()
+                                                     select g;
 
                         DataTable boundTable = query.CopyToDataTable<DataRow>();
                         return boundTable;

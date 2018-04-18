@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using TMF_ftp.Core;
@@ -8,7 +7,7 @@ namespace TMF_ftp.Imports
 {
     public class BulkRDS
     {
-        private static string _csvFilename;
+        //private static string _csvFilename;
         private static string _gw;
         private static int _final;
 
@@ -16,32 +15,24 @@ namespace TMF_ftp.Imports
         {
             
         }
-        public static void Import(string[] ofdFilenames)
+        public static void Import(string ofdFilename)
         {
             int count = 0;
 
-            using (SqlConnection connection =
-                new SqlConnection(new SmartDB().Connection.ConnectionString))
+            using (SqlConnection conn = new SqlConnection(new SmartDB().Connection.ConnectionString))
             {
-                connection.Open();
+                conn.Open();
 
-                foreach (var filename in ofdFilenames)
-                {
-                    DataTable newMeter = MakeTable.RDS(filename);
-                    //bool flag = getMeterList.Code == ErrorEnum.NoError;
+                //foreach (var filename in ofdFilename)
+                //{
+                //Console.WriteLine(ofdFilename);
+                DataTable newMeter = MakeTable.RDS(ofdFilename);
 
-                    DataTable fetchMeter = FetchTable.GetOMS();
-
-                    var fMeter = new HashSet<string>(fetchMeter.AsEnumerable()
-                        .Select(x => x.Field<string>("SerialNumber")));
-                    DataTable dtUniqueGateway = newMeter.AsEnumerable()
-                        .Where(x => !fMeter.Contains(x.Field<string>("SerialNumber")))
-                        .CopyToDataTable();
-
-                    InsertMeterBulkCopy(connection, dtUniqueGateway);
-                }
+                InsertMeterBulkCopy(conn, newMeter);
+                //}
             }
         }
+
         private static void InsertMeterBulkCopy(SqlConnection connection, DataTable dtRDS)
         {
             using (SqlBulkCopy s = new SqlBulkCopy(connection))
@@ -60,7 +51,7 @@ namespace TMF_ftp.Imports
                 s.ColumnMappings.Add("EMPTY_PIPE_ALR", "EMPTY_PIPE_ALR");
                 s.ColumnMappings.Add("SPECIFIC_ERROR_ALR", "SPECIFIC_ERROR_ALR");
                 s.ColumnMappings.Add("MAC_ADDRESS", "MAC_ADDRESS");
-                
+
                 try
                 {
                     s.WriteToServer(dtRDS);

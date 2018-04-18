@@ -7,7 +7,7 @@ using TMF_ftp.Models;
 
 namespace TMF_ftp.Services
 {
-	public static class FTPSsrv
+    public static class FTPSsrv
     {
         static object padlock = new object();
         static FTPSsrv()
@@ -22,7 +22,7 @@ namespace TMF_ftp.Services
                 client.Credentials = new NetworkCredential(srv.Username, srv.Password); //TODO user input 
                 client.EncryptionMode = FtpEncryptionMode.Explicit;
                 client.ValidateCertificate += OnValidateCertificate;
-                client.SocketKeepAlive = true;
+                //client.SocketKeepAlive = true;
                 client.Connect();
             }
         }
@@ -34,7 +34,7 @@ namespace TMF_ftp.Services
                 client.Credentials = new NetworkCredential(srv.Username, srv.Password); //TODO user input 
                 client.EncryptionMode = FtpEncryptionMode.Explicit;
                 client.ValidateCertificate += OnValidateCertificate;
-                client.SocketKeepAlive = true;
+                //client.SocketKeepAlive = true;
                 client.Connect();
 
                 DownloadDirectory(client, srv.RemoteDirectory, srv.LocalDirectory);
@@ -49,7 +49,7 @@ namespace TMF_ftp.Services
                 client.Credentials = new NetworkCredential(srv.Username, srv.Password); //TODO user input 
                 client.EncryptionMode = FtpEncryptionMode.Explicit;
                 client.ValidateCertificate += OnValidateCertificate;
-                client.SocketKeepAlive = true;
+                //client.SocketKeepAlive = true;
                 client.Connect();
 
                 return IsEmpty(client, srv.RemoteDirectory);
@@ -103,7 +103,7 @@ namespace TMF_ftp.Services
                 client.DownloadFile(destination + "\\" + file.Name, file.FullName, true, FtpVerify.OnlyChecksum);
                 Console.WriteLine($"Successful download: {file.FullName}"); //TODO Write to logs
                 client.DeleteFile(file.FullName);
-
+                FormMain.PerformBulkInsert();
             }
             catch (Exception e)
             {

@@ -19,8 +19,10 @@ namespace TMF_ftp.Helpers
             {
                 this.rTextBox.Invoke((Action) delegate { this.rTextBox.AppendText(str + "\n"); });
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Console.WriteLine(e);
+                //Environment.Exit(0);
                 throw;
                 //Application.Exit();
             }

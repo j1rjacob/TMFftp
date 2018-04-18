@@ -3,6 +3,8 @@ using Quartz;
 using Quartz.Impl;
 using Raccoom.Windows.Forms;
 using System;
+using System.Data;
+using System.Data.SqlClient;
 using System.IO;
 using System.Net;
 using System.Reflection;
@@ -10,7 +12,9 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TMF_ftp.Core;
 using TMF_ftp.Helpers;
+using TMF_ftp.Imports;
 using TMF_ftp.Models;
 using TMF_ftp.Services;
 using TMF_ftp.Util;
@@ -22,6 +26,7 @@ namespace TMF_ftp
     {
         private static Ftpx _srv;
         private static string _cmbBox;
+        private static string _sourcePath = @"E:\SecuredFTP\Test";
 
         private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private static CancellationTokenSource _cancellationTokenSourceFtps = new CancellationTokenSource();
@@ -42,10 +47,10 @@ namespace TMF_ftp
             this.tvFileSystem.Populate();
             this.tvFileSystem.Nodes[0].Expand();
         }
-        
+
         [DllImport("wininet.dll")]
         private extern static bool InternetGetConnectedState(out int Description, int ReservedValue);
-        
+
         private static bool IsConnectedToInternet()
         {
             return InternetGetConnectedState(out int Description, 0);
@@ -140,6 +145,7 @@ namespace TMF_ftp
 
             base.OnClosed(e);
             Application.Exit();
+            Environment.Exit(0);
         }
         private void tvFileSystem_AfterSelect(object sender, TreeViewEventArgs e)
         {
@@ -180,7 +186,10 @@ namespace TMF_ftp
             {
                 if (_srv != null)
                 {
+                    _sourcePath = TextBoxDestination.Text;
                     PerformDownload();
+                    //PerformBulkInsert();
+                    //MovetoBackup();
                     LoadTaskScheduler();
                 }
                 else
@@ -210,8 +219,11 @@ namespace TMF_ftp
                     goto RepeatHere;
                 }
                 Console.WriteLine("Download Finished");
+
+                //TODO UPDATE RDS AND OMS LATEST
+                UpdateOMSRDSLatest();
             }
-            catch (System.IO.IOException)
+            catch (IOException)
             {
                 goto RepeatHere;
             }
@@ -231,15 +243,6 @@ namespace TMF_ftp
         }
         private static void GoSFTPDownload()
         {
-            //while (!_cancellationTokenSourceSFtp.IsCancellationRequested)
-            //{
-            //    if (_cancellationTokenSourceSFtp.IsCancellationRequested)
-            //    {
-            //        Console.WriteLine("Download cancelled");
-            //        return;
-            //    }
-            //    else
-            //    {
             RepeatHere:
             try
             {
@@ -250,6 +253,9 @@ namespace TMF_ftp
                     goto RepeatHere;
                 }
                 Console.WriteLine("Download Finished");
+
+                //UPDATE RDS AND OMS LATEST
+                UpdateOMSRDSLatest();
             }
             catch (System.IO.IOException)
             {
@@ -268,17 +274,13 @@ namespace TMF_ftp
                 Console.WriteLine(ex.Message);
                 goto RepeatHere;
             }
-            //    }
-            //}
         }
         private void LoadTaskScheduler()
         {
             try
             {
-                // construct a scheduler factory
                 ISchedulerFactory schedFact = new StdSchedulerFactory();
 
-                // get a scheduler
                 IScheduler sched = schedFact.GetScheduler();
                 sched.Start();
 
@@ -335,11 +337,101 @@ namespace TMF_ftp
             if (_cmbBox == "FTPS")
             {
                 Task.Factory.StartNew(GoFTPSDownload);
+                //GoFTPSDownload();
             }
             else if (_cmbBox == "SFTP")
             {
                 Task.Factory.StartNew(GoSFTPDownload);
+                //GoSFTPDownload();
             }
+            //Task.WaitAll();
+        }
+        public static void MovetoBackup()
+        {
+            try
+            {
+                //Now Create all of the directories
+                foreach (string dirPath in Directory.GetDirectories(_sourcePath, "*.*",
+                    SearchOption.AllDirectories))
+                    Directory.CreateDirectory(dirPath.Replace(_sourcePath, @"C:\SecuredBackup"));
+
+                //Copy all the files & Replaces any files with the same name
+                foreach (string newPath in Directory.GetFiles(_sourcePath, "*.csv",
+                    SearchOption.AllDirectories))
+                    File.Copy(newPath, newPath.Replace(_sourcePath, @"C:\SecuredBackup"), true);
+                Console.WriteLine("Moving to backup is successful.");
+
+                //TODO Delete all directory.
+                foreach (string newPath in Directory.GetFiles(_sourcePath, "*.*",
+                    SearchOption.AllDirectories))
+                    File.Delete(newPath);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+        public static void PerformBulkInsert()
+        {
+            try
+            {
+                Console.WriteLine("Process Bulk Insert.");
+                string[] dirs = Directory.GetFiles(_sourcePath, "*.csv", SearchOption.AllDirectories);
+                foreach (var file in dirs)
+                {
+                    //Console.WriteLine(file);
+                    string[] allLines = File.ReadAllLines(file);
+                    var columnCount = allLines[0].Split(',').Length;
+                    if (columnCount == 3)
+                    {
+                        BulkOMS.Import(file);
+                    }
+                    else if (columnCount == 11)
+                    {
+                        BulkRDS.Import(file);
+                    }
+                    Console.WriteLine("Finish Bulk Insert.");
+                    MovetoBackup();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+        public static void UpdateOMSRDSLatest()
+        {
+            Console.WriteLine("Start updating database");
+            try
+            {
+                using (var conn = new SqlConnection(new SmartDB().Connection.ConnectionString))
+                using (var command = new SqlCommand("LATEST_OMS_READING", conn)
+                {
+                    CommandType = CommandType.StoredProcedure
+                })
+                {
+                    conn.Open();
+                    command.ExecuteNonQuery();
+                }
+
+                using (var conn = new SqlConnection(new SmartDB().Connection.ConnectionString))
+                using (var command = new SqlCommand("LATEST_RDS_READING", conn)
+                {
+                    CommandType = CommandType.StoredProcedure
+                })
+                {
+                    conn.Open();
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            Console.WriteLine("Finish updating database");
         }
         private void FormMain_Shown(object sender, EventArgs e)
         {
@@ -383,7 +475,7 @@ namespace TMF_ftp
                     return;
 
                 default:
-                    
+
                     MessageBox.Show(_msg, "TMF ftp", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
                     using (frmActivation frm = new frmActivation())

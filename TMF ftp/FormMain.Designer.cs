@@ -118,7 +118,7 @@
             this.TextBoxHost.Name = "TextBoxHost";
             this.TextBoxHost.Size = new System.Drawing.Size(100, 21);
             this.TextBoxHost.TabIndex = 6;
-            this.TextBoxHost.Text = "10.195.111.27";
+            this.TextBoxHost.Text = "stl-amr.com";
             // 
             // TextBoxUsername
             // 
@@ -127,7 +127,7 @@
             this.TextBoxUsername.Name = "TextBoxUsername";
             this.TextBoxUsername.Size = new System.Drawing.Size(100, 21);
             this.TextBoxUsername.TabIndex = 7;
-            this.TextBoxUsername.Text = "jizftp";
+            this.TextBoxUsername.Text = "j1rjacob";
             // 
             // TextBoxPassword
             // 
@@ -137,7 +137,7 @@
             this.TextBoxPassword.PasswordChar = '*';
             this.TextBoxPassword.Size = new System.Drawing.Size(100, 21);
             this.TextBoxPassword.TabIndex = 8;
-            this.TextBoxPassword.Text = "123456";
+            this.TextBoxPassword.Text = "ajffJNRX143";
             // 
             // TextBoxPort
             // 
@@ -146,7 +146,7 @@
             this.TextBoxPort.Name = "TextBoxPort";
             this.TextBoxPort.Size = new System.Drawing.Size(40, 21);
             this.TextBoxPort.TabIndex = 9;
-            this.TextBoxPort.Text = "9000";
+            this.TextBoxPort.Text = "21";
             // 
             // ButtonPlay
             // 
@@ -285,7 +285,7 @@
             this.TextBoxDestination.Name = "TextBoxDestination";
             this.TextBoxDestination.Size = new System.Drawing.Size(188, 21);
             this.TextBoxDestination.TabIndex = 14;
-            this.TextBoxDestination.Text = "C:\\Test\\";
+            this.TextBoxDestination.Text = "E:\\SecuredFTP\\Test";
             // 
             // statusStrip1
             // 

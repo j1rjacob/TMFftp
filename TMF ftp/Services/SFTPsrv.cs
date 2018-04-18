@@ -81,8 +81,9 @@ namespace TMF_ftp.Services
 
 				client.DeleteFile(file.FullName);
 				Console.WriteLine($"Immediately deleted : {file.FullName}"); //TODO Write to logs
-			}
-			catch (Exception e)
+			    FormMain.PerformBulkInsert();
+            }
+            catch (Exception e)
 			{
 				Console.WriteLine(e);
 				throw;
