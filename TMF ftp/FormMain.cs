@@ -3,8 +3,6 @@ using Quartz;
 using Quartz.Impl;
 using Raccoom.Windows.Forms;
 using System;
-using System.Data;
-using System.Data.SqlClient;
 using System.IO;
 using System.Net;
 using System.Reflection;
@@ -12,7 +10,6 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using TMF_ftp.Core;
 using TMF_ftp.Helpers;
 using TMF_ftp.Imports;
 using TMF_ftp.Models;
@@ -43,7 +40,6 @@ namespace TMF_ftp
             ComboBoxConnectionType.SelectedIndex = 0;
 
             this.tvFileSystem.DataSource = new TreeStrategyFolderBrowserProvider();
-
             this.tvFileSystem.Populate();
             this.tvFileSystem.Nodes[0].Expand();
         }
@@ -110,6 +106,7 @@ namespace TMF_ftp
             else if (ComboBoxConnectionType.Text == "SFTP")
             {
                 Console.WriteLine("Connecting...");
+                Thread.Sleep(2000);//LOL
                 Console.WriteLine("Try to download");
             }
         }
@@ -221,7 +218,7 @@ namespace TMF_ftp
                 Console.WriteLine("Download Finished");
 
                 //TODO UPDATE RDS AND OMS LATEST
-                UpdateOMSRDSLatest();
+                LatestStoredProc.UpdateOMSRDSLatest();
             }
             catch (IOException)
             {
@@ -255,7 +252,7 @@ namespace TMF_ftp
                 Console.WriteLine("Download Finished");
 
                 //UPDATE RDS AND OMS LATEST
-                UpdateOMSRDSLatest();
+                LatestStoredProc.UpdateOMSRDSLatest();
             }
             catch (System.IO.IOException)
             {
@@ -401,38 +398,7 @@ namespace TMF_ftp
                 throw;
             }
         }
-        public static void UpdateOMSRDSLatest()
-        {
-            Console.WriteLine("Start updating database");
-            try
-            {
-                using (var conn = new SqlConnection(new SmartDB().Connection.ConnectionString))
-                using (var command = new SqlCommand("LATEST_OMS_READING", conn)
-                {
-                    CommandType = CommandType.StoredProcedure
-                })
-                {
-                    conn.Open();
-                    command.ExecuteNonQuery();
-                }
 
-                using (var conn = new SqlConnection(new SmartDB().Connection.ConnectionString))
-                using (var command = new SqlCommand("LATEST_RDS_READING", conn)
-                {
-                    CommandType = CommandType.StoredProcedure
-                })
-                {
-                    conn.Open();
-                    command.ExecuteNonQuery();
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
-            Console.WriteLine("Finish updating database");
-        }
         private void FormMain_Shown(object sender, EventArgs e)
         {
             //Initialize variables with default values

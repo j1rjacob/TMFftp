@@ -141,6 +141,7 @@
     </Compile>
     <Compile Include="Services\FTPSsrv.cs" />
     <Compile Include="Services\FTPSsrv1.cs" />
+    <Compile Include="Services\LatestStoredProc.cs" />
     <Compile Include="Services\SFTPsrv.cs" />
     <Compile Include="Util\AutoJob.cs" />
     <Compile Include="Util\Timex.cs" />
