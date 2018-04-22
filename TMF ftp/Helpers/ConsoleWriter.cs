@@ -22,9 +22,7 @@ namespace TMF_ftp.Helpers
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                //Environment.Exit(0);
                 throw;
-                //Application.Exit();
             }
         }
 

@@ -9,11 +9,11 @@ namespace TMF_ftp.Services
 {
     public static class FTPSsrv
     {
-        static object padlock = new object();
         static FTPSsrv()
         {
             Debug.LogToCustomListener();
         }
+
         public static void Connect(Ftpx srv)
         {
             using (var client = new FtpClient())
@@ -26,6 +26,7 @@ namespace TMF_ftp.Services
                 client.Connect();
             }
         }
+
         public static void Download(Ftpx srv)
         {
             using (FtpClient client = new FtpClient())
@@ -40,11 +41,11 @@ namespace TMF_ftp.Services
                 DownloadDirectory(client, srv.RemoteDirectory, srv.LocalDirectory);
             }
         }
+
         public static bool CheckDirectory(Ftpx srv)
         {
             using (FtpClient client = new FtpClient())
             {
-                //Debug.LogToCustomListener();
                 client.Host = srv.Host;
                 client.Credentials = new NetworkCredential(srv.Username, srv.Password); //TODO user input 
                 client.EncryptionMode = FtpEncryptionMode.Explicit;
@@ -55,7 +56,9 @@ namespace TMF_ftp.Services
                 return IsEmpty(client, srv.RemoteDirectory);
             }
         }
+
         private static void OnValidateCertificate(FtpClient control, FtpSslValidationEventArgs e) => e.Accept = true;
+
         public static void DownloadDirectory(FtpClient client, string source, string destination)
         {
             try
@@ -96,6 +99,7 @@ namespace TMF_ftp.Services
                 Console.WriteLine(e); //TODO Write to logs
             }
         }
+
         private static void DownloadFile(FtpClient client, FtpListItem file, string destination)
         {
             try
@@ -111,6 +115,7 @@ namespace TMF_ftp.Services
                 //throw;
             }
         }
+
         public static bool IsEmpty(FtpClient client, string source)
         {
             try

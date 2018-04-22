@@ -7,13 +7,12 @@ namespace TMF_ftp.Imports
 {
     public class BulkRDS
     {
-        //private static string _csvFilename;
         private static string _gw;
         private static int _final;
 
         public BulkRDS()
         {
-            
+
         }
         public static void Import(string ofdFilename)
         {
@@ -23,13 +22,9 @@ namespace TMF_ftp.Imports
             {
                 conn.Open();
 
-                //foreach (var filename in ofdFilename)
-                //{
-                //Console.WriteLine(ofdFilename);
                 DataTable newMeter = MakeTable.RDS(ofdFilename);
 
                 InsertMeterBulkCopy(conn, newMeter);
-                //}
             }
         }
 

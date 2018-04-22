@@ -51,6 +51,7 @@ namespace TMF_ftp
         {
             return InternetGetConnectedState(out int Description, 0);
         }
+
         private void FormMain_Load(object sender, EventArgs e)
         {
             try
@@ -65,6 +66,7 @@ namespace TMF_ftp
                 throw;
             }
         }
+
         private void ButtonPlay_Click(object sender, EventArgs e)
         {
             if (IsConnectedToInternet() == false)
@@ -110,6 +112,7 @@ namespace TMF_ftp
                 Console.WriteLine("Try to download");
             }
         }
+
         private void GetFTPSRemoteDirectory()
         {
             RepeatHere:
@@ -130,11 +133,13 @@ namespace TMF_ftp
                 goto RepeatHere;
             }
         }
+
         private void richTextBoxDebug_TextChanged(object sender, EventArgs e)
         {
             richTextBoxDebug.SelectionStart = richTextBoxDebug.Text.Length;
             richTextBoxDebug.ScrollToCaret();
         }
+
         protected override void OnClosed(EventArgs e)
         {
             FirewallManager.RemoveFirewallRule();
@@ -144,6 +149,7 @@ namespace TMF_ftp
             Application.Exit();
             Environment.Exit(0);
         }
+
         private void tvFileSystem_AfterSelect(object sender, TreeViewEventArgs e)
         {
             try
@@ -153,11 +159,12 @@ namespace TMF_ftp
             }
             catch (Exception exception)
             {
-                //Console.WriteLine(exception);
+                Console.WriteLine(exception);
                 //throw;
                 return;
             }
         }
+
         private void tvFolderBrowserSource_AfterSelect(object sender, TreeViewEventArgs e)
         {
             try
@@ -172,10 +179,12 @@ namespace TMF_ftp
                 return;
             }
         }
+
         private void ComboBoxConnectionType_SelectedIndexChanged(object sender, EventArgs e)
         {
             _cmbBox = ComboBoxConnectionType.Text;
         }
+
         private void ButtonDownload_Click(object sender, EventArgs e)
         {
             DialogResult dialogResult = MessageBox.Show("Files in the remote folder will be deleted too. Sure?", "TMF ftp", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
@@ -185,8 +194,6 @@ namespace TMF_ftp
                 {
                     _sourcePath = TextBoxDestination.Text;
                     PerformDownload();
-                    //PerformBulkInsert();
-                    //MovetoBackup();
                     LoadTaskScheduler();
                 }
                 else
@@ -197,6 +204,7 @@ namespace TMF_ftp
                 return;
             }
         }
+
         private void CheckBoxAuto_CheckedChanged(object sender, EventArgs e)
         {
             if (CheckBoxAuto.Checked)
@@ -204,6 +212,7 @@ namespace TMF_ftp
                 LoadTaskScheduler();
             }
         }
+
         private static void GoFTPSDownload()
         {
             RepeatHere:
@@ -238,6 +247,7 @@ namespace TMF_ftp
                 goto RepeatHere;
             }
         }
+
         private static void GoSFTPDownload()
         {
             RepeatHere:
@@ -272,6 +282,7 @@ namespace TMF_ftp
                 goto RepeatHere;
             }
         }
+
         private void LoadTaskScheduler()
         {
             try
@@ -303,6 +314,7 @@ namespace TMF_ftp
                 _log.Error(e);
             }
         }
+
         #region ToolStripMenu
         private void toolStripButtonFTPServer_Click(object sender, EventArgs e)
         {
@@ -329,6 +341,7 @@ namespace TMF_ftp
             validateDiaglog.ShowDialog();
         }
         #endregion
+
         public static void PerformDownload()
         {
             if (_cmbBox == "FTPS")
@@ -341,8 +354,8 @@ namespace TMF_ftp
                 Task.Factory.StartNew(GoSFTPDownload);
                 //GoSFTPDownload();
             }
-            //Task.WaitAll();
         }
+
         public static void MovetoBackup()
         {
             try
@@ -358,7 +371,6 @@ namespace TMF_ftp
                     File.Copy(newPath, newPath.Replace(_sourcePath, @"C:\SecuredBackup"), true);
                 Console.WriteLine("Moving to backup is successful.");
 
-                //TODO Delete all directory.
                 foreach (string newPath in Directory.GetFiles(_sourcePath, "*.*",
                     SearchOption.AllDirectories))
                     File.Delete(newPath);
@@ -369,6 +381,7 @@ namespace TMF_ftp
                 throw;
             }
         }
+
         public static void PerformBulkInsert()
         {
             try
@@ -377,7 +390,6 @@ namespace TMF_ftp
                 string[] dirs = Directory.GetFiles(_sourcePath, "*.csv", SearchOption.AllDirectories);
                 foreach (var file in dirs)
                 {
-                    //Console.WriteLine(file);
                     string[] allLines = File.ReadAllLines(file);
                     var columnCount = allLines[0].Split(',').Length;
                     if (columnCount == 3)

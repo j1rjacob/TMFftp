@@ -129,8 +129,6 @@
     <Compile Include="Imports\BulkRDS.cs" />
     <Compile Include="Imports\FetchTable.cs" />
     <Compile Include="Imports\MakeTable.cs" />
-    <Compile Include="Interfaces\IFtp.cs" />
-    <Compile Include="Models\FilePath.cs" />
     <Compile Include="Models\Ftpx.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -140,7 +138,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Services\FTPSsrv.cs" />
-    <Compile Include="Services\FTPSsrv1.cs" />
     <Compile Include="Services\LatestStoredProc.cs" />
     <Compile Include="Services\SFTPsrv.cs" />
     <Compile Include="Util\AutoJob.cs" />
@@ -253,7 +250,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Imports\CreateTable\" />
+    <Folder Include="Interfaces\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

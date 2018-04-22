@@ -9,7 +9,7 @@ namespace TMF_ftp.Imports
     {
         public BulkOMS()
         {
-                
+
         }
         public static void Import(string ofdFilename)
         {
@@ -19,12 +19,9 @@ namespace TMF_ftp.Imports
             {
                 conn.Open();
 
-                //foreach (var filename in ofdFilename)
-                //{
-                    DataTable newMeter = MakeTable.OMS(ofdFilename);
+                DataTable newMeter = MakeTable.OMS(ofdFilename);
 
-                    InsertMeterBulkCopy(conn, newMeter);
-                //}
+                InsertMeterBulkCopy(conn, newMeter);
             }
         }
 

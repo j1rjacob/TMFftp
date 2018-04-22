@@ -87,45 +87,43 @@ namespace TMF_ftp.Imports
             {
                 string[] allLines = File.ReadAllLines(Filename);
                 var columnCount = allLines[0].Split(',').Length;
-                //if (columnCount == 11)
-                //{
-                    var query = from line in allLines
-                                let data = line.Split(',')
-                                select new
-                                {
-                                    METER_ADDRESS = data[0],
-                                    READING_DATE = data[1],
-                                    READING_VALUE_L = data[2],
-                                    LOW_BATTERY_ALR = data[3],
-                                    LEAK_ALR = data[4],
-                                    MAGNETIC_TAMPER_ALR = data[5],
-                                    METER_ERROR_ALR = data[6],
-                                    BACK_FLOW_ALR = data[7],
-                                    BROKEN_PIPE_ALR = data[8],
-                                    EMPTY_PIPE_ALR = data[9],
-                                    SPECIFIC_ERROR_ALR = data[10]
-                                };
-                    DataRow row;
-                    foreach (var q in query.ToList().Skip(1))
-                    {
-                        row = newMeterReading.NewRow();
-                        row["Id"] = Guid.NewGuid().ToString();
-                        row["METER_ADDRESS"] = q.METER_ADDRESS.Replace("-", "");
-                        row["READING_DATE"] = DateTime.ParseExact(q.READING_DATE, "HH:mm:ss dd/MM/yyyy", new CultureInfo("en-US"));
-                        row["READING_VALUE_L"] = q.READING_VALUE_L;
-                        row["LOW_BATTERY_ALR"] = q.LOW_BATTERY_ALR;
-                        row["LEAK_ALR"] = q.LEAK_ALR;
-                        row["MAGNETIC_TAMPER_ALR"] = q.MAGNETIC_TAMPER_ALR;
-                        row["METER_ERROR_ALR"] = q.METER_ERROR_ALR;
-                        row["BACK_FLOW_ALR"] = q.BACK_FLOW_ALR;
-                        row["BROKEN_PIPE_ALR"] = q.BROKEN_PIPE_ALR;
-                        row["EMPTY_PIPE_ALR"] = q.EMPTY_PIPE_ALR;
-                        row["SPECIFIC_ERROR_ALR"] = q.SPECIFIC_ERROR_ALR;
-                        //row["MAC_ADDRESS"] = Regex.Replace(gw, @"^(..)(..)(..)(..)(..)(..)$", "$1:$2:$3:$4:$5:$6");
-                        row["MAC_ADDRESS"] = gw;
-                        newMeterReading.Rows.Add(row);
-                    }
-                //}
+
+                var query = from line in allLines
+                            let data = line.Split(',')
+                            select new
+                            {
+                                METER_ADDRESS = data[0],
+                                READING_DATE = data[1],
+                                READING_VALUE_L = data[2],
+                                LOW_BATTERY_ALR = data[3],
+                                LEAK_ALR = data[4],
+                                MAGNETIC_TAMPER_ALR = data[5],
+                                METER_ERROR_ALR = data[6],
+                                BACK_FLOW_ALR = data[7],
+                                BROKEN_PIPE_ALR = data[8],
+                                EMPTY_PIPE_ALR = data[9],
+                                SPECIFIC_ERROR_ALR = data[10]
+                            };
+                DataRow row;
+                foreach (var q in query.ToList().Skip(1))
+                {
+                    row = newMeterReading.NewRow();
+                    row["Id"] = Guid.NewGuid().ToString();
+                    row["METER_ADDRESS"] = q.METER_ADDRESS.Replace("-", "");
+                    row["READING_DATE"] = DateTime.ParseExact(q.READING_DATE, "HH:mm:ss dd/MM/yyyy", new CultureInfo("en-US"));
+                    row["READING_VALUE_L"] = q.READING_VALUE_L;
+                    row["LOW_BATTERY_ALR"] = q.LOW_BATTERY_ALR;
+                    row["LEAK_ALR"] = q.LEAK_ALR;
+                    row["MAGNETIC_TAMPER_ALR"] = q.MAGNETIC_TAMPER_ALR;
+                    row["METER_ERROR_ALR"] = q.METER_ERROR_ALR;
+                    row["BACK_FLOW_ALR"] = q.BACK_FLOW_ALR;
+                    row["BROKEN_PIPE_ALR"] = q.BROKEN_PIPE_ALR;
+                    row["EMPTY_PIPE_ALR"] = q.EMPTY_PIPE_ALR;
+                    row["SPECIFIC_ERROR_ALR"] = q.SPECIFIC_ERROR_ALR;
+                    //row["MAC_ADDRESS"] = Regex.Replace(gw, @"^(..)(..)(..)(..)(..)(..)$", "$1:$2:$3:$4:$5:$6");
+                    row["MAC_ADDRESS"] = gw;
+                    newMeterReading.Rows.Add(row);
+                }
             }
             catch (Exception ex)
             {
@@ -136,6 +134,7 @@ namespace TMF_ftp.Imports
 
             return newMeterReading;
         }
+
         public static DataTable OMS(string Filename)
         {
             string gw = Path.GetFileName(Path.GetDirectoryName(Filename));
@@ -174,29 +173,27 @@ namespace TMF_ftp.Imports
             {
                 string[] allLines = File.ReadAllLines(Filename);
                 var columnCount = allLines[0].Split(',').Length;
-                //if (columnCount == 3)
-                //{   //OMS
-                    var query = from line in allLines
-                                let data = line.Split(',')
-                                select new
-                                {
-                                    METER_ADDRESS = data[0],
-                                    READING_DATE = data[1],
-                                    PACKET = data[2]
-                                };
-                    DataRow row;
-                    foreach (var q in query.ToList().Skip(1))
-                    {
-                        row = newMeterReading.NewRow();
-                        row["Id"] = Guid.NewGuid().ToString(); 
-                        row["METER_ADDRESS"] = q.METER_ADDRESS.Replace("-", "");
-                        row["READING_DATE"] = DateTime.ParseExact(q.READING_DATE, "HH:mm:ss dd/MM/yyyy", new CultureInfo("en-US"));
-                        row["PACKET"] = q.PACKET;
-                        //row["MAC_ADDRESS"] = Regex.Replace(gw, @"^(..)(..)(..)(..)(..)(..)$", "$1:$2:$3:$4:$5:$6");
-                        row["MAC_ADDRESS"] = gw;
-                        newMeterReading.Rows.Add(row);
-                    }
-                //}
+
+                var query = from line in allLines
+                            let data = line.Split(',')
+                            select new
+                            {
+                                METER_ADDRESS = data[0],
+                                READING_DATE = data[1],
+                                PACKET = data[2]
+                            };
+                DataRow row;
+                foreach (var q in query.ToList().Skip(1))
+                {
+                    row = newMeterReading.NewRow();
+                    row["Id"] = Guid.NewGuid().ToString();
+                    row["METER_ADDRESS"] = q.METER_ADDRESS.Replace("-", "");
+                    row["READING_DATE"] = DateTime.ParseExact(q.READING_DATE, "HH:mm:ss dd/MM/yyyy", new CultureInfo("en-US"));
+                    row["PACKET"] = q.PACKET;
+                    //row["MAC_ADDRESS"] = Regex.Replace(gw, @"^(..)(..)(..)(..)(..)(..)$", "$1:$2:$3:$4:$5:$6");
+                    row["MAC_ADDRESS"] = gw;
+                    newMeterReading.Rows.Add(row);
+                }
             }
             catch (Exception ex)
             {

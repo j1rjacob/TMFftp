@@ -12,8 +12,8 @@ namespace TMF_ftp.Services
 	    static SFTPsrv()
 	    {
             Helpers.Debug.LogToCustomListener();
-
         }
+
         public static void Connect(Ftpx srv)
 		{
 			using (var client = new SftpClient(srv.Host, srv.Port, srv.Username, srv.Password))
@@ -23,6 +23,7 @@ namespace TMF_ftp.Services
                 System.Diagnostics.Debug.WriteLine("Successful!");
 			}
 		}
+
 		public static void Download(Ftpx srv)
 		{
 			using (var sftp = new SftpClient(srv.Host, srv.Port, srv.Username, srv.Password))
@@ -31,6 +32,7 @@ namespace TMF_ftp.Services
 				DownloadDirectory(sftp, sftp.WorkingDirectory, srv.LocalDirectory);
 			}
 		}
+
 	    public static bool CheckDirectory(Ftpx srv)
 	    {
 	        using (var sftp = new SftpClient(srv.Host, srv.Port, srv.Username, srv.Password))
@@ -39,7 +41,9 @@ namespace TMF_ftp.Services
 	            return IsEmpty(sftp, srv.RemoteDirectory);
             }
         }
+
 	    private static void OnValidateCertificate(FtpClient control, FtpSslValidationEventArgs e) => e.Accept = true;
+
         private static void DownloadDirectory(SftpClient client, string source, string destination)
 		{
 			try
@@ -69,6 +73,7 @@ namespace TMF_ftp.Services
 				throw;
 			}
 		}
+
 		private static void DownloadFile(SftpClient client, SftpFile file, string directory)
 		{
 			try
@@ -89,6 +94,7 @@ namespace TMF_ftp.Services
 				throw;
 			}
 		}
+
 	    public static bool IsEmpty(SftpClient client, string source)
 	    {
 	        try
