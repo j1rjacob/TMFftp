@@ -5,9 +5,9 @@ using TMF_ftp.Core;
 
 namespace TMF_ftp.Services
 {
-    internal static class LatestStoredProc
+    internal class LatestStoredProc
     {
-        public static void UpdateOMSRDSLatest()
+        public void UpdateOMSRDSLatest()
         {
             Console.WriteLine("Start updating database");
             try

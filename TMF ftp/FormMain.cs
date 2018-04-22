@@ -56,7 +56,7 @@ namespace TMF_ftp
         {
             try
             {
-                FirewallManager.SetRule("ON");
+                new FirewallManager().SetRule("ON");
                 ComboBoxConnectionType.Text = "SFTP";
             }
             catch (Exception ex)
@@ -142,7 +142,7 @@ namespace TMF_ftp
 
         protected override void OnClosed(EventArgs e)
         {
-            FirewallManager.RemoveFirewallRule();
+            new FirewallManager().RemoveFirewallRule();
             _log.Info("Closing the App, Bye.");
 
             base.OnClosed(e);
@@ -218,16 +218,16 @@ namespace TMF_ftp
             RepeatHere:
             try
             {
-                FTPSsrv.Download(_srv);
+                new FTPSsrv().Download(_srv);
 
-                if (FTPSsrv.CheckDirectory(_srv))
+                if (new FTPSsrv().CheckDirectory(_srv))
                 {
                     goto RepeatHere;
                 }
                 Console.WriteLine("Download Finished");
 
                 //TODO UPDATE RDS AND OMS LATEST
-                LatestStoredProc.UpdateOMSRDSLatest();
+                new LatestStoredProc().UpdateOMSRDSLatest();
             }
             catch (IOException)
             {
@@ -253,16 +253,16 @@ namespace TMF_ftp
             RepeatHere:
             try
             {
-                SFTPsrv.Download(_srv);
+                new SFTPsrv().Download(_srv);
 
-                if (SFTPsrv.CheckDirectory(_srv))
+                if (new SFTPsrv().CheckDirectory(_srv))
                 {
                     goto RepeatHere;
                 }
                 Console.WriteLine("Download Finished");
 
                 //UPDATE RDS AND OMS LATEST
-                LatestStoredProc.UpdateOMSRDSLatest();
+                new LatestStoredProc().UpdateOMSRDSLatest();
             }
             catch (System.IO.IOException)
             {
@@ -394,11 +394,11 @@ namespace TMF_ftp
                     var columnCount = allLines[0].Split(',').Length;
                     if (columnCount == 3)
                     {
-                        BulkOMS.Import(file);
+                        new BulkOMS().Import(file);
                     }
                     else if (columnCount == 11)
                     {
-                        BulkRDS.Import(file);
+                        new BulkRDS().Import(file);
                     }
                     Console.WriteLine("Finish Bulk Insert.");
                     MovetoBackup();

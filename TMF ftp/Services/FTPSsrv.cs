@@ -7,14 +7,14 @@ using TMF_ftp.Models;
 
 namespace TMF_ftp.Services
 {
-    public static class FTPSsrv
+    public class FTPSsrv
     {
-        static FTPSsrv()
+        public FTPSsrv()
         {
-            Debug.LogToCustomListener();
+            new Debug().LogToCustomListener();
         }
 
-        public static void Connect(Ftpx srv)
+        public void Connect(Ftpx srv)
         {
             using (var client = new FtpClient())
             {
@@ -27,7 +27,7 @@ namespace TMF_ftp.Services
             }
         }
 
-        public static void Download(Ftpx srv)
+        public void Download(Ftpx srv)
         {
             using (FtpClient client = new FtpClient())
             {
@@ -42,7 +42,7 @@ namespace TMF_ftp.Services
             }
         }
 
-        public static bool CheckDirectory(Ftpx srv)
+        public bool CheckDirectory(Ftpx srv)
         {
             using (FtpClient client = new FtpClient())
             {
@@ -57,9 +57,9 @@ namespace TMF_ftp.Services
             }
         }
 
-        private static void OnValidateCertificate(FtpClient control, FtpSslValidationEventArgs e) => e.Accept = true;
+        private void OnValidateCertificate(FtpClient control, FtpSslValidationEventArgs e) => e.Accept = true;
 
-        public static void DownloadDirectory(FtpClient client, string source, string destination)
+        public void DownloadDirectory(FtpClient client, string source, string destination)
         {
             try
             {
@@ -100,7 +100,7 @@ namespace TMF_ftp.Services
             }
         }
 
-        private static void DownloadFile(FtpClient client, FtpListItem file, string destination)
+        private void DownloadFile(FtpClient client, FtpListItem file, string destination)
         {
             try
             {
@@ -116,7 +116,7 @@ namespace TMF_ftp.Services
             }
         }
 
-        public static bool IsEmpty(FtpClient client, string source)
+        public bool IsEmpty(FtpClient client, string source)
         {
             try
             {

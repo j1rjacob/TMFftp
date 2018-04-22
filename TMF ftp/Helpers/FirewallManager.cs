@@ -4,9 +4,9 @@ using System;
 
 namespace TMF_ftp.Helpers
 {
-    public static class FirewallManager
+    public class FirewallManager
     {
-        public static void SetRule(string status)
+        public void SetRule(string status)
         {
             INetFwRule firewallRule = (INetFwRule)Activator.CreateInstance(Type.GetTypeFromProgID("HNetCfg.FWRule"));
             firewallRule.Action = NET_FW_ACTION_.NET_FW_ACTION_ALLOW;
@@ -24,7 +24,7 @@ namespace TMF_ftp.Helpers
                 firewallPolicy.Rules.Remove(firewallRule.Name);
         }
 
-        public static void RemoveFirewallRule()
+        public void RemoveFirewallRule()
         {
             try
             {

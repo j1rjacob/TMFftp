@@ -7,14 +7,14 @@ using TMF_ftp.Models;
 
 namespace TMF_ftp.Services
 {
-    public static class SFTPsrv
+    public class SFTPsrv
 	{
-	    static SFTPsrv()
+	    public SFTPsrv()
 	    {
-            Helpers.Debug.LogToCustomListener();
+            new Helpers.Debug().LogToCustomListener();
         }
 
-        public static void Connect(Ftpx srv)
+        public void Connect(Ftpx srv)
 		{
 			using (var client = new SftpClient(srv.Host, srv.Port, srv.Username, srv.Password))
 			{
@@ -24,7 +24,7 @@ namespace TMF_ftp.Services
 			}
 		}
 
-		public static void Download(Ftpx srv)
+		public void Download(Ftpx srv)
 		{
 			using (var sftp = new SftpClient(srv.Host, srv.Port, srv.Username, srv.Password))
 			{
@@ -33,7 +33,7 @@ namespace TMF_ftp.Services
 			}
 		}
 
-	    public static bool CheckDirectory(Ftpx srv)
+	    public bool CheckDirectory(Ftpx srv)
 	    {
 	        using (var sftp = new SftpClient(srv.Host, srv.Port, srv.Username, srv.Password))
 	        {
@@ -42,9 +42,9 @@ namespace TMF_ftp.Services
             }
         }
 
-	    private static void OnValidateCertificate(FtpClient control, FtpSslValidationEventArgs e) => e.Accept = true;
+	    private void OnValidateCertificate(FtpClient control, FtpSslValidationEventArgs e) => e.Accept = true;
 
-        private static void DownloadDirectory(SftpClient client, string source, string destination)
+        private void DownloadDirectory(SftpClient client, string source, string destination)
 		{
 			try
 			{
@@ -74,7 +74,7 @@ namespace TMF_ftp.Services
 			}
 		}
 
-		private static void DownloadFile(SftpClient client, SftpFile file, string directory)
+		private void DownloadFile(SftpClient client, SftpFile file, string directory)
 		{
 			try
 			{
@@ -95,7 +95,7 @@ namespace TMF_ftp.Services
 			}
 		}
 
-	    public static bool IsEmpty(SftpClient client, string source)
+	    public bool IsEmpty(SftpClient client, string source)
 	    {
 	        try
 	        {

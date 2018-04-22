@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace TMF_ftp.Helpers
 {
-	public static class Debug
+    public class Debug
 	{
 		class CustomTraceListener : TraceListener
 		{
@@ -19,7 +19,7 @@ namespace TMF_ftp.Helpers
 			}
 		}
 
-		public static void LogToCustomListener()
+		public void LogToCustomListener()
 		{
 			FtpTrace.AddListener(new CustomTraceListener());
 		}

@@ -7,14 +7,11 @@ namespace TMF_ftp.Imports
 {
     public class BulkRDS
     {
-        private static string _gw;
-        private static int _final;
-
         public BulkRDS()
         {
 
         }
-        public static void Import(string ofdFilename)
+        public void Import(string ofdFilename)
         {
             int count = 0;
 
@@ -22,13 +19,13 @@ namespace TMF_ftp.Imports
             {
                 conn.Open();
 
-                DataTable newMeter = MakeTable.RDS(ofdFilename);
+                DataTable newMeter = new MakeTable().RDS(ofdFilename);
 
                 InsertMeterBulkCopy(conn, newMeter);
             }
         }
 
-        private static void InsertMeterBulkCopy(SqlConnection connection, DataTable dtRDS)
+        private void InsertMeterBulkCopy(SqlConnection connection, DataTable dtRDS)
         {
             using (SqlBulkCopy s = new SqlBulkCopy(connection))
             {

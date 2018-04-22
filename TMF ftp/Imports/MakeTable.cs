@@ -6,9 +6,9 @@ using System.Linq;
 
 namespace TMF_ftp.Imports
 {
-    public static class MakeTable
+    public class MakeTable
     {
-        public static DataTable RDS(string Filename)
+        public DataTable RDS(string Filename)
         {
             string gw = Path.GetFileName(Path.GetDirectoryName(Filename));
 
@@ -135,7 +135,7 @@ namespace TMF_ftp.Imports
             return newMeterReading;
         }
 
-        public static DataTable OMS(string Filename)
+        public DataTable OMS(string Filename)
         {
             string gw = Path.GetFileName(Path.GetDirectoryName(Filename));
             DataTable newMeterReading = new DataTable("tblOMS");

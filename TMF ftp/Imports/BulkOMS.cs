@@ -11,7 +11,7 @@ namespace TMF_ftp.Imports
         {
 
         }
-        public static void Import(string ofdFilename)
+        public void Import(string ofdFilename)
         {
             int count = 0;
 
@@ -19,13 +19,13 @@ namespace TMF_ftp.Imports
             {
                 conn.Open();
 
-                DataTable newMeter = MakeTable.OMS(ofdFilename);
+                DataTable newMeter = new MakeTable().OMS(ofdFilename);
 
                 InsertMeterBulkCopy(conn, newMeter);
             }
         }
 
-        private static void InsertMeterBulkCopy(SqlConnection conn, DataTable dtOMS)
+        private void InsertMeterBulkCopy(SqlConnection conn, DataTable dtOMS)
         {
             using (SqlBulkCopy s = new SqlBulkCopy(conn))
             {
