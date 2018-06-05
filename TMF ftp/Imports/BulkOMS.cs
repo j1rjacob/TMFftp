@@ -11,21 +11,19 @@ namespace TMF_ftp.Imports
         {
 
         }
-        public void Import(string ofdFilename)
+        public void Import(string openFileDialogFilename)
         {
             int count = 0;
 
             using (SqlConnection conn = new SqlConnection(new SmartDB().Connection.ConnectionString))
             {
                 conn.Open();
-
-                DataTable newMeter = new MakeTable().OMS(ofdFilename);
-
+                DataTable newMeter = new Make().TableOMS(openFileDialogFilename);
                 InsertMeterBulkCopy(conn, newMeter);
             }
         }
 
-        private void InsertMeterBulkCopy(SqlConnection conn, DataTable dtOMS)
+        private void InsertMeterBulkCopy(SqlConnection conn, DataTable tableOMS)
         {
             using (SqlBulkCopy s = new SqlBulkCopy(conn))
             {
@@ -38,7 +36,7 @@ namespace TMF_ftp.Imports
 
                 try
                 {
-                    s.WriteToServer(dtOMS);
+                    s.WriteToServer(tableOMS);
                     Console.WriteLine($"Importing was successful.");
                 }
                 catch (Exception ex)

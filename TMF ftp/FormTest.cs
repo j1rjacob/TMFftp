@@ -27,8 +27,8 @@ namespace TMF_ftp
             //    MessageBox.Show("Import was not successful");
             //}
 
-            FormMain.PerformBulkInsert();
-            //FormMain.MovetoBackup();
+            FormMain.BulkInsert.Perform();
+            //FormMain.MoveTo();
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -56,7 +56,7 @@ namespace TMF_ftp
             //    }
             //}
 
-            //Directory.Move(@"E:\Test", @"E:\BackupFTP");
+            //Directory.MoveTo(@"E:\Test", @"E:\BackupFTP");
 
             //Now Create all of the directories
             foreach (string dirPath in Directory.GetDirectories(@"E:\SecuredFTP\Test", "*.*",

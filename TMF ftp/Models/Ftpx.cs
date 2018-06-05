@@ -1,6 +1,6 @@
 ﻿namespace TMF_ftp.Models
 {
-    public class Ftpx
+    public class BaseFtp
 	{
 		public string Host { get; set; }
 		public string Username { get; set; }

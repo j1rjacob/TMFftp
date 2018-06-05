@@ -3,11 +3,11 @@ using System.Data;
 using System.Data.SqlClient;
 using TMF_ftp.Core;
 
-namespace TMF_ftp.Services
+namespace TMF_ftp.Util
 {
-    internal class LatestStoredProc
+    internal class Latest
     {
-        public void UpdateOMSRDSLatest()
+        public void UpdateOnOMSAndRDS()
         {
             Console.WriteLine("Start updating database");
             try

@@ -127,8 +127,8 @@
     <Compile Include="Helpers\FirewallManager.cs" />
     <Compile Include="Imports\BulkOMS.cs" />
     <Compile Include="Imports\BulkRDS.cs" />
-    <Compile Include="Imports\FetchTable.cs" />
-    <Compile Include="Imports\MakeTable.cs" />
+    <Compile Include="Imports\Fetch.cs" />
+    <Compile Include="Imports\Make.cs" />
     <Compile Include="Models\Ftpx.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -137,8 +137,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Services\Backup.cs" />
+    <Compile Include="Services\BulkInsert.cs" />
     <Compile Include="Services\FTPSsrv.cs" />
-    <Compile Include="Services\LatestStoredProc.cs" />
+    <Compile Include="Services\TaskScheduler.cs" />
+    <Compile Include="Util\Latest.cs" />
     <Compile Include="Services\SFTPsrv.cs" />
     <Compile Include="Util\AutoJob.cs" />
     <Compile Include="Util\Timex.cs" />
@@ -250,6 +253,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Backup\" />
     <Folder Include="Interfaces\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

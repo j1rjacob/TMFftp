@@ -6,9 +6,9 @@ using System.Linq;
 
 namespace TMF_ftp.Imports
 {
-    public class MakeTable
+    public class Make
     {
-        public DataTable RDS(string Filename)
+        public DataTable TableRDS(string Filename)
         {
             string gw = Path.GetFileName(Path.GetDirectoryName(Filename));
 
@@ -120,7 +120,6 @@ namespace TMF_ftp.Imports
                     row["BROKEN_PIPE_ALR"] = q.BROKEN_PIPE_ALR;
                     row["EMPTY_PIPE_ALR"] = q.EMPTY_PIPE_ALR;
                     row["SPECIFIC_ERROR_ALR"] = q.SPECIFIC_ERROR_ALR;
-                    //row["MAC_ADDRESS"] = Regex.Replace(gw, @"^(..)(..)(..)(..)(..)(..)$", "$1:$2:$3:$4:$5:$6");
                     row["MAC_ADDRESS"] = gw;
                     newMeterReading.Rows.Add(row);
                 }
@@ -135,7 +134,7 @@ namespace TMF_ftp.Imports
             return newMeterReading;
         }
 
-        public DataTable OMS(string Filename)
+        public DataTable TableOMS(string Filename)
         {
             string gw = Path.GetFileName(Path.GetDirectoryName(Filename));
             DataTable newMeterReading = new DataTable("tblOMS");
@@ -190,7 +189,6 @@ namespace TMF_ftp.Imports
                     row["METER_ADDRESS"] = q.METER_ADDRESS.Replace("-", "");
                     row["READING_DATE"] = DateTime.ParseExact(q.READING_DATE, "HH:mm:ss dd/MM/yyyy", new CultureInfo("en-US"));
                     row["PACKET"] = q.PACKET;
-                    //row["MAC_ADDRESS"] = Regex.Replace(gw, @"^(..)(..)(..)(..)(..)(..)$", "$1:$2:$3:$4:$5:$6");
                     row["MAC_ADDRESS"] = gw;
                     newMeterReading.Rows.Add(row);
                 }

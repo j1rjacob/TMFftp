@@ -14,7 +14,7 @@ namespace TMF_ftp.Services
             new Debug().LogToCustomListener();
         }
 
-        public void Connect(Ftpx srv)
+        public void Connect(BaseFtp srv)
         {
             using (var client = new FtpClient())
             {
@@ -27,7 +27,7 @@ namespace TMF_ftp.Services
             }
         }
 
-        public void Download(Ftpx srv)
+        public void Download(BaseFtp srv)
         {
             using (FtpClient client = new FtpClient())
             {
@@ -42,7 +42,7 @@ namespace TMF_ftp.Services
             }
         }
 
-        public bool CheckDirectory(Ftpx srv)
+        public bool CheckDirectory(BaseFtp srv)
         {
             using (FtpClient client = new FtpClient())
             {
@@ -107,7 +107,7 @@ namespace TMF_ftp.Services
                 client.DownloadFile(destination + "\\" + file.Name, file.FullName, true, FtpVerify.OnlyChecksum);
                 Console.WriteLine($"Successful download: {file.FullName}"); //TODO Write to logs
                 client.DeleteFile(file.FullName);
-                FormMain.PerformBulkInsert();
+                new BulkInsert().Perform(@"E:\SecuredFTP\Test");
             }
             catch (Exception e)
             {

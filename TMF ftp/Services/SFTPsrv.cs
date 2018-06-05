@@ -14,7 +14,7 @@ namespace TMF_ftp.Services
             new Helpers.Debug().LogToCustomListener();
         }
 
-        public void Connect(Ftpx srv)
+        public void Connect(BaseFtp srv)
 		{
 			using (var client = new SftpClient(srv.Host, srv.Port, srv.Username, srv.Password))
 			{
@@ -24,7 +24,7 @@ namespace TMF_ftp.Services
 			}
 		}
 
-		public void Download(Ftpx srv)
+		public void Download(BaseFtp srv)
 		{
 			using (var sftp = new SftpClient(srv.Host, srv.Port, srv.Username, srv.Password))
 			{
@@ -33,7 +33,7 @@ namespace TMF_ftp.Services
 			}
 		}
 
-	    public bool CheckDirectory(Ftpx srv)
+	    public bool CheckDirectory(BaseFtp srv)
 	    {
 	        using (var sftp = new SftpClient(srv.Host, srv.Port, srv.Username, srv.Password))
 	        {
@@ -86,7 +86,7 @@ namespace TMF_ftp.Services
 
 				client.DeleteFile(file.FullName);
 				Console.WriteLine($"Immediately deleted : {file.FullName}"); //TODO Write to logs
-			    FormMain.PerformBulkInsert();
+			    new BulkInsert().Perform(@"E:\SecuredFTP\Test");
             }
             catch (Exception e)
 			{

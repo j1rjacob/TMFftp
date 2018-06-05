@@ -1,6 +1,4 @@
 ﻿using QLicense;
-using Quartz;
-using Quartz.Impl;
 using Raccoom.Windows.Forms;
 using System;
 using System.IO;
@@ -11,17 +9,17 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TMF_ftp.Helpers;
-using TMF_ftp.Imports;
 using TMF_ftp.Models;
 using TMF_ftp.Services;
 using TMF_ftp.Util;
 using TMFLicense;
+using TaskScheduler = TMF_ftp.Services.TaskScheduler;
 
 namespace TMF_ftp
 {
     public partial class FormMain : Form
     {
-        private static Ftpx _srv;
+        private static BaseFtp _baseFtp;
         private static string _cmbBox;
         private static string _sourcePath = @"E:\SecuredFTP\Test";
 
@@ -30,7 +28,7 @@ namespace TMF_ftp
         private static CancellationTokenSource _cancellationTokenSourceSFtp = new CancellationTokenSource();
         private static Thread threadToCancel = null;
         byte[] _certPubicKeyData;
-
+        
         public FormMain()
         {
             _log.Info("Loading Application");
@@ -39,9 +37,7 @@ namespace TMF_ftp
             Console.SetOut(new ConsoleWriter(richTextBoxDebug));
             ComboBoxConnectionType.SelectedIndex = 0;
 
-            this.tvFileSystem.DataSource = new TreeStrategyFolderBrowserProvider();
-            this.tvFileSystem.Populate();
-            this.tvFileSystem.Nodes[0].Expand();
+            PopulateFTPBrowser();
         }
 
         [DllImport("wininet.dll")]
@@ -54,17 +50,7 @@ namespace TMF_ftp
 
         private void FormMain_Load(object sender, EventArgs e)
         {
-            try
-            {
-                new FirewallManager().SetRule("ON");
-                ComboBoxConnectionType.Text = "SFTP";
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-                _log.Error(ex);
-                throw;
-            }
+            LoadDefaultFTP();
         }
 
         private void ButtonPlay_Click(object sender, EventArgs e)
@@ -88,7 +74,7 @@ namespace TMF_ftp
                 return;
             }
 
-            _srv = new Ftpx()
+            _baseFtp = new BaseFtp()
             {
                 Host = TextBoxHost.Text,
                 Username = TextBoxUsername.Text,
@@ -120,7 +106,7 @@ namespace TMF_ftp
             {
                 Console.WriteLine("Connecting...");
                 TreeStrategyFTPProvider ftpProvider =
-                    new TreeStrategyFTPProvider(_srv.Host, _srv.Port, new NetworkCredential(_srv.Username, _srv.Password));
+                    new TreeStrategyFTPProvider(_baseFtp.Host, _baseFtp.Port, new NetworkCredential(_baseFtp.Username, _baseFtp.Password));
 
                 tvFolderBrowserSource.DataSource = ftpProvider;
                 tvFolderBrowserSource.Populate();
@@ -190,11 +176,11 @@ namespace TMF_ftp
             DialogResult dialogResult = MessageBox.Show("Files in the remote folder will be deleted too. Sure?", "TMF ftp", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (dialogResult == DialogResult.Yes)
             {
-                if (_srv != null)
+                if (_baseFtp != null)
                 {
                     _sourcePath = TextBoxDestination.Text;
                     PerformDownload();
-                    LoadTaskScheduler();
+                    new TaskScheduler().Perform();
                 }
                 else
                     MessageBox.Show("Connect first");
@@ -209,7 +195,7 @@ namespace TMF_ftp
         {
             if (CheckBoxAuto.Checked)
             {
-                LoadTaskScheduler();
+                new TaskScheduler().Perform();
             }
         }
 
@@ -218,16 +204,15 @@ namespace TMF_ftp
             RepeatHere:
             try
             {
-                new FTPSsrv().Download(_srv);
+                new FTPSsrv().Download(_baseFtp);
 
-                if (new FTPSsrv().CheckDirectory(_srv))
+                if (new FTPSsrv().CheckDirectory(_baseFtp))
                 {
                     goto RepeatHere;
                 }
                 Console.WriteLine("Download Finished");
-
-                //TODO UPDATE RDS AND OMS LATEST
-                new LatestStoredProc().UpdateOMSRDSLatest();
+                
+                new Latest().UpdateOnOMSAndRDS();
             }
             catch (IOException)
             {
@@ -253,16 +238,15 @@ namespace TMF_ftp
             RepeatHere:
             try
             {
-                new SFTPsrv().Download(_srv);
+                new SFTPsrv().Download(_baseFtp);
 
-                if (new SFTPsrv().CheckDirectory(_srv))
+                if (new SFTPsrv().CheckDirectory(_baseFtp))
                 {
                     goto RepeatHere;
                 }
                 Console.WriteLine("Download Finished");
-
-                //UPDATE RDS AND OMS LATEST
-                new LatestStoredProc().UpdateOMSRDSLatest();
+                
+                new Latest().UpdateOnOMSAndRDS();
             }
             catch (System.IO.IOException)
             {
@@ -283,62 +267,27 @@ namespace TMF_ftp
             }
         }
 
-        private void LoadTaskScheduler()
+        #region Methods
+        private void PopulateFTPBrowser()
+        {
+            this.tvFileSystem.DataSource = new TreeStrategyFolderBrowserProvider();
+            this.tvFileSystem.Populate();
+            this.tvFileSystem.Nodes[0].Expand();
+        }
+
+        private void LoadDefaultFTP()
         {
             try
             {
-                ISchedulerFactory schedFact = new StdSchedulerFactory();
-
-                IScheduler sched = schedFact.GetScheduler();
-                sched.Start();
-
-                IJobDetail job = JobBuilder.Create<AutoJob>()
-                    .WithIdentity("myJob", "group1")
-                    .Build();
-
-                ITrigger trigger = TriggerBuilder.Create()
-                    .WithDailyTimeIntervalSchedule
-                    (s =>
-                        s
-                            //.WithIntervalInHours(1)
-                            .WithIntervalInMinutes(58)
-                            .OnEveryDay()
-                            .StartingDailyAt(TimeOfDay.HourAndMinuteOfDay(8, 00))
-                            .EndingDailyAt(TimeOfDay.HourAndMinuteOfDay(19, 00))
-                    )
-                    .Build();
-                sched.ScheduleJob(job, trigger);
+                new FirewallManager().SetRule("ON");
+                ComboBoxConnectionType.Text = "SFTP";
             }
-            catch (ArgumentException e)
+            catch (Exception ex)
             {
-                _log.Error(e);
+                Console.WriteLine(ex);
+                _log.Error(ex);
+                throw;
             }
-        }
-
-        #region ToolStripMenu
-        private void toolStripButtonFTPServer_Click(object sender, EventArgs e)
-        {
-
-        }
-        private void toolStripButtonCancel_Click(object sender, EventArgs e)
-        {
-            if (_cmbBox == "FTPS" && _cancellationTokenSourceFtps != null)
-            {
-                Console.WriteLine("FTPS");
-
-                _cancellationTokenSourceFtps.Cancel();
-            }
-            else if (_cmbBox == "SFTP" && _cancellationTokenSourceSFtp != null)
-            {
-                Console.WriteLine("SFTP");
-
-                _cancellationTokenSourceSFtp.Cancel();
-            }
-        }
-        private void toolStripButtonLicense_Click(object sender, EventArgs e)
-        {
-            var validateDiaglog = new frmActivation();
-            validateDiaglog.ShowDialog();
         }
         #endregion
 
@@ -347,71 +296,19 @@ namespace TMF_ftp
             if (_cmbBox == "FTPS")
             {
                 Task.Factory.StartNew(GoFTPSDownload);
-                //GoFTPSDownload();
             }
             else if (_cmbBox == "SFTP")
             {
                 Task.Factory.StartNew(GoSFTPDownload);
-                //GoSFTPDownload();
-            }
-        }
-
-        public static void MovetoBackup()
-        {
-            try
-            {
-                //Now Create all of the directories
-                foreach (string dirPath in Directory.GetDirectories(_sourcePath, "*.*",
-                    SearchOption.AllDirectories))
-                    Directory.CreateDirectory(dirPath.Replace(_sourcePath, @"C:\SecuredBackup"));
-
-                //Copy all the files & Replaces any files with the same name
-                foreach (string newPath in Directory.GetFiles(_sourcePath, "*.csv",
-                    SearchOption.AllDirectories))
-                    File.Copy(newPath, newPath.Replace(_sourcePath, @"C:\SecuredBackup"), true);
-                Console.WriteLine("Moving to backup is successful.");
-
-                foreach (string newPath in Directory.GetFiles(_sourcePath, "*.*",
-                    SearchOption.AllDirectories))
-                    File.Delete(newPath);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
-        }
-
-        public static void PerformBulkInsert()
-        {
-            try
-            {
-                Console.WriteLine("Process Bulk Insert.");
-                string[] dirs = Directory.GetFiles(_sourcePath, "*.csv", SearchOption.AllDirectories);
-                foreach (var file in dirs)
-                {
-                    string[] allLines = File.ReadAllLines(file);
-                    var columnCount = allLines[0].Split(',').Length;
-                    if (columnCount == 3)
-                    {
-                        new BulkOMS().Import(file);
-                    }
-                    else if (columnCount == 11)
-                    {
-                        new BulkRDS().Import(file);
-                    }
-                    Console.WriteLine("Finish Bulk Insert.");
-                    MovetoBackup();
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
             }
         }
 
         private void FormMain_Shown(object sender, EventArgs e)
+        {
+            CheckLicense();
+        }
+
+        private void CheckLicense()
         {
             //Initialize variables with default values
             MyLicense _lic = null;
@@ -423,7 +320,6 @@ namespace TMF_ftp
             using (MemoryStream _mem = new MemoryStream())
             {
                 _assembly.GetManifestResourceStream("TMF_ftp.LicenseVerify.cer").CopyTo(_mem);
-
                 _certPubicKeyData = _mem.ToArray();
             }
 

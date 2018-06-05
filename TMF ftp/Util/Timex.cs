@@ -4,7 +4,7 @@ namespace TMF_ftp.Util
 {
     public class Timex
     {
-        public string DBtoCSVDateConvert(string DBDate)
+        public string ConvertDatabasetoCSVDate(string DBDate)
         {
             if (DBDate == null)
             {
@@ -16,7 +16,7 @@ namespace TMF_ftp.Util
             var time24 = DateTime.Parse(dbDate[1] + " " + dbDate[2]);
             return time24.ToString("HH:mm:ss") + " " + datex.ToString("dd/MM/yyyy");
         }
-        public DateTime CSVtoDateDateConvert(string CSVDate)
+        public DateTime ConvertCSVtoDatabaseDate(string CSVDate)
         {
             var dbDate = CSVDate.Split(null);
             var datex = dbDate[1].Split('/');

@@ -7,9 +7,9 @@ using TMF_ftp.Core;
 
 namespace TMF_ftp.Imports
 {
-    public static class FetchTable
+    public class Fetch
     {   //TODO Check when no data on the table
-        public static DataTable GetRDS()
+        public DataTable TableRDS()
         {
             using (SqlConnection conn = new SqlConnection(new SmartDB().Connection.ConnectionString))
             {
@@ -35,7 +35,7 @@ namespace TMF_ftp.Imports
             }
         }
 
-        public static DataTable GetOMS()
+        public DataTable TableOMS()
         {
             using (SqlConnection conn = new SqlConnection(new SmartDB().Connection.ConnectionString))
             {
